@@ -1,0 +1,25 @@
+{
+  "name": "GMT — المشتريات",
+  "short_name": "المشتريات",
+  "start_url": "./purchases_standalone.html",
+  "scope": "./",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#111827",
+  "theme_color": "#C00012",
+  "icons": [
+    {
+      "src": "gmt-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "gmt-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
