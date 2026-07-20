@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏷️ طابعة الملصقات — GMT</title>
+<link rel="stylesheet" href="gmt-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<style>
+  :root{ --gmt-red:#C00012; --gmt-ink:#111; --gmt-muted:#6b7280; --gmt-line:#e5e7eb; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Cairo',Arial,Tahoma,sans-serif;background:#f6f7f9;color:var(--gmt-ink);}
+  header{background:var(--gmt-red);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px;}
+  header h1{font-size:17px;font-weight:900;}
+  header .sub{font-size:11px;opacity:.9;font-weight:600;}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px;}
+  .card{background:#fff;border:1px solid var(--gmt-line);border-radius:16px;padding:14px;margin-bottom:14px;}
+  .card h2{font-size:13px;font-weight:900;margin-bottom:10px;}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  input,select{border:1px solid var(--gmt-line);border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13px;font-weight:700;}
+  input[type=search]{flex:1;min-width:220px;}
+  button{border:none;border-radius:10px;padding:9px 15px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
+  .btn-p{background:var(--gmt-red);color:#fff;}
+  .btn-s{background:#111;color:#fff;}
+  .btn-g{background:#eef0f3;color:#111;}
+  table{width:100%;border-collapse:collapse;}
+  th,td{padding:8px;text-align:right;font-size:12px;border-bottom:1px solid var(--gmt-line);}
+  th{background:#fafafa;font-weight:900;font-size:11px;}
+  .qty{width:64px;text-align:center;}
+  .muted{color:var(--gmt-muted);font-size:11px;font-weight:600;}
+  /* ── الملصقات ── */
+  #sheet{background:#fff;border:1px solid var(--gmt-line);border-radius:16px;padding:10px;}
+  .labels{display:grid;gap:2mm;}
+  .label{border:1px dashed #cfd4da;border-radius:4px;padding:2mm;text-align:center;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+  .l-name{font-size:9pt;font-weight:900;line-height:1.2;max-height:2.6em;overflow:hidden;}
+  .l-price{font-size:12pt;font-weight:900;color:var(--gmt-red);}
+  .l-bc svg{width:100%;height:auto;}
+  .l-sku{font-size:7pt;color:#6b7280;font-weight:700;letter-spacing:.5px;}
+  @media print{
+    body{background:#fff;}
+    header,.card,.no-print{display:none!important;}
+    .wrap{padding:0;max-width:none;}
+    #sheet{border:none;border-radius:0;padding:0;}
+    .label{border:1px dashed #ddd;page-break-inside:avoid;}
+    @page{ size:A4 portrait; margin:8mm; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🏷️ طابعة الملصقات</h1>
+    <div class="sub">باركود + اسم + سعر — بنفس بنية الجرد (نفس قاعدة البيانات، نفس الأعمدة)</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="card no-print">
+    <h2>① اختر المنتجات</h2>
+    <div class="row">
+      <input type="search" id="q" placeholder="ابحث بالاسم أو الباركود…">
+      <button class="btn-g" onclick="selectAllShown()">تحديد كل الظاهر</button>
+      <button class="btn-g" onclick="clearSel()">مسح التحديد</button>
+      <span class="muted" id="stat">…</span>
+    </div>
+    <div style="max-height:320px;overflow:auto;margin-top:10px;border:1px solid var(--gmt-line);border-radius:12px;">
+      <table>
+        <thead><tr><th style="width:34px;"></th><th>المنتج</th><th>الباركود</th><th>السعر</th><th>عدد الملصقات</th></tr></thead>
+        <tbody id="tb"><tr><td colspan="5" class="muted" style="padding:16px;">جارٍ التحميل…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card no-print">
+    <h2>② شكل الملصق</h2>
+    <div class="row">
+      <label class="muted">المقاس:</label>
+      <select id="size" onchange="render()">
+        <option value="3">3 بالصف — 63×34mm (A4 قياسي)</option>
+        <option value="4">4 بالصف — 48×30mm</option>
+        <option value="2">2 بالصف — 95×45mm (كبير)</option>
+        <option value="5">5 بالصف — 38×25mm (صغير)</option>
+      </select>
+      <label class="muted"><input type="checkbox" id="showPrice" checked onchange="render()"> السعر</label>
+      <label class="muted"><input type="checkbox" id="showName" checked onchange="render()"> الاسم</label>
+      <label class="muted"><input type="checkbox" id="showBc" checked onchange="render()"> الباركود</label>
+      <button class="btn-s" onclick="render()">🔄 تحديث المعاينة</button>
+      <button class="btn-p" onclick="window.print()">🖨️ طباعة</button>
+    </div>
+    <div class="muted" style="margin-top:8px;">💡 المنتج بلا باركود يُطبع باسمه وسعره فقط، ويُعلَّم لك بقائمة تحت المعاينة.</div>
+  </div>
+
+  <div id="sheet"><div class="labels" id="labels"></div></div>
+  <div class="card no-print" id="warn" style="display:none;border-color:#f0b429;background:#fffbeb;">
+    <h2>⚠️ منتجات بلا باركود</h2>
+    <div id="warnList" class="muted"></div>
+  </div>
+
+</div>
+
+<script>
+/* ══ INV-3 (2026-07-13) ══════════════════════════════════════════════════
+   هذا الملف كان **غير موجود** — زر «طابعة الملصقات» بالجرد كان يفتحه ⇒ 404.
+   بُني الآن بنفس بنية الجرد: نفس Supabase، نفس جدول products، نفس JsBarcode. */
+const SB  = 'https://ysawzwtmodkqqbqoiojj.supabase.co';
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlzYXd6d3Rtb2RrcXFicW9pb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NjI0OTUsImV4cCI6MjA5MjAzODQ5NX0.g-dBDpHzMsP_0IQAKFxzWkKzc_I13bGUMeYNgcUmrKQ';
+
+const SIZES = { 2:[95,45,14], 3:[63,34,11], 4:[48,30,9], 5:[38,25,8] };
+let products = [], sel = {};   // sel[id] = عدد الملصقات
+
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function load(){
+  try{
+    const r = await fetch(`${SB}/rest/v1/products?select=id,name,barcode,price,short&order=name.asc&limit=2000`,
+      { headers:{ apikey:KEY, Authorization:'Bearer '+KEY } });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    products = await r.json();
+    renderTable();
+  }catch(e){
+    document.getElementById('tb').innerHTML =
+      `<tr><td colspan="5" style="padding:16px;color:#C00012;font-weight:800;">تعذّر تحميل المنتجات: ${esc(e.message)}</td></tr>`;
+  }
+}
+
+function shown(){
+  const q = (document.getElementById('q').value||'').trim().toLowerCase();
+  if(!q) return products;
+  return products.filter(p =>
+    (p.name||'').toLowerCase().includes(q) || String(p.barcode||'').includes(q));
+}
+
+function renderTable(){
+  const list = shown();
+  document.getElementById('stat').textContent =
+    `${list.length} منتج · محدَّد: ${Object.keys(sel).length}`;
+  document.getElementById('tb').innerHTML = list.slice(0,400).map(p => `
+    <tr>
+      <td><input type="checkbox" ${sel[p.id]?'checked':''} onchange="toggle('${p.id}',this.checked)"></td>
+      <td style="font-weight:800;">${esc(p.name)}</td>
+      <td class="muted">${esc(p.barcode||'—')}</td>
+      <td style="font-weight:800;">${p.price?('$'+Number(p.price).toFixed(2)):'—'}</td>
+      <td><input class="qty" type="number" min="1" value="${sel[p.id]||1}"
+            onchange="setQty('${p.id}',this.value)" ${sel[p.id]?'':'disabled'}></td>
+    </tr>`).join('') || '<tr><td colspan="5" class="muted" style="padding:16px;">لا نتائج</td></tr>';
+}
+
+function toggle(id, on){ if(on) sel[id] = sel[id]||1; else delete sel[id]; renderTable(); render(); }
+function setQty(id, v){ sel[id] = Math.max(1, Number(v)||1); render(); }
+function selectAllShown(){ shown().forEach(p => sel[p.id] = sel[p.id]||1); renderTable(); render(); }
+function clearSel(){ sel = {}; renderTable(); render(); }
+
+function render(){
+  const [w,h,gapPx] = SIZES[document.getElementById('size').value] || SIZES[3];
+  const cols = Math.max(1, Math.floor(194 / (w + 2)));   // 194mm = عرض A4 مطروحاً منه الهوامش
+  const box = document.getElementById('labels');
+  box.style.gridTemplateColumns = `repeat(${cols}, ${w}mm)`;
+
+  const sName  = document.getElementById('showName').checked;
+  const sPrice = document.getElementById('showPrice').checked;
+  const sBc    = document.getElementById('showBc').checked;
+
+  const noBc = [];
+  let html = '';
+  Object.keys(sel).forEach(id => {
+    const p = products.find(x => String(x.id) === String(id));
+    if(!p) return;
+    if(!p.barcode) noBc.push(p.name);
+    for(let i = 0; i < (sel[id]||1); i++){
+      html += `<div class="label" style="width:${w}mm;height:${h}mm;">
+        ${sName  ? `<div class="l-name">${esc(p.name)}</div>` : ''}
+        ${sBc && p.barcode ? `<div class="l-bc"><svg class="bc" data-code="${esc(p.barcode)}"></svg></div>` : ''}
+        ${sPrice ? `<div class="l-price">${p.price ? '$'+Number(p.price).toFixed(2) : ''}</div>` : ''}
+        <div class="l-sku">${esc(p.barcode || p.short || '')}</div>
+      </div>`;
+    }
+  });
+  box.innerHTML = html || '<div class="muted" style="padding:24px;">اختر منتجات لتظهر الملصقات هنا.</div>';
+
+  // ارسم الباركودات
+  box.querySelectorAll('svg.bc').forEach(svg => {
+    try{
+      JsBarcode(svg, svg.dataset.code, {
+        format:'CODE128', displayValue:false, margin:0,
+        height: Math.round(h * 1.1), width: 1.4
+      });
+    }catch(e){ svg.parentElement.innerHTML = '<div class="l-sku">باركود غير صالح</div>'; }
+  });
+
+  const warn = document.getElementById('warn');
+  if(noBc.length){
+    warn.style.display = 'block';
+    document.getElementById('warnList').innerHTML =
+      [...new Set(noBc)].map(n => '• ' + esc(n)).join('<br>')
+      + '<br><br>هذه المنتجات طُبعت بلا باركود — أضف لها باركود من الجرد ثم أعد الطباعة.';
+  } else { warn.style.display = 'none'; }
+}
+
+document.getElementById('q').addEventListener('input', renderTable);
+load();
+</script>
+
+<script src="gmt-brand.js"></script>
+<script src="gmt-bugcatcher.js"></script>
+<script src="gmt-inspector.js"></script>
+<script src="gmt-ui.js"></script>
+<script src="gmt-guide.js"></script>
+
+<script src="gmt-selftest.js"></script>
+<script src="gmt-guide-labels.js"></script>
+</body>
+</html>
