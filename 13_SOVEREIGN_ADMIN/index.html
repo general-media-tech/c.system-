@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأدمن الكلي — General Media Tech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+        html, body { height:100%; }
+        body { background:#0f0f14; color:#fff; display:flex; flex-direction:column; overflow:hidden; }
+
+        /* ══ شاشة القفل ══ */
+        #lock { position:fixed; inset:0; z-index:500; background:linear-gradient(160deg,#1a1a1a,#7c1d1d); display:flex; align-items:center; justify-content:center; padding:24px; }
+        .lock-card { background:#fff; color:#111; border-radius:22px; padding:36px 30px; max-width:400px; width:100%; box-shadow:0 24px 70px rgba(0,0,0,0.5); }
+        .lock-logo { text-align:center; margin-bottom:26px; }
+        .lock-logo .t1 { font-size:28px; font-weight:900; color:#C00012; letter-spacing:-0.5px; }
+        .lock-logo .t2 { font-size:12px; color:#666; margin-top:5px; font-weight:700; }
+        .lock-logo .t3 { font-size:11px; color:#999; margin-top:10px; }
+        .lock-card input { width:100%; padding:14px; border:1.5px solid #ddd; border-radius:12px; font-size:15px; margin-bottom:14px; }
+        .lock-card input:focus { outline:none; border-color:#C00012; }
+        .lock-err { display:none; background:#fef2f2; border:1.5px solid #fca5a5; border-radius:9px; padding:10px; margin-bottom:14px; font-size:12px; font-weight:700; color:#dc2626; text-align:center; }
+        .lock-btn { width:100%; padding:14px; background:#C00012; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:900; cursor:pointer; transition:background .15s; }
+        .lock-btn:hover { background:#a00010; }
+
+        /* ══ الرأس ══ */
+        header { background:linear-gradient(135deg,#1a1a1a,#2a1215); padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:2px solid #C00012; flex-shrink:0; }
+        header .brand { display:flex; align-items:baseline; gap:8px; min-width:0; }
+        header .brand .b1 { font-size:17px; font-weight:900; white-space:nowrap; }
+        header .brand .b2 { font-size:10px; color:#aaa; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        header .actions { display:flex; gap:6px; flex-shrink:0; }
+        .hbtn { background:rgba(255,255,255,0.1); border:none; color:#fff; border-radius:9px; padding:7px 12px; font-size:11px; font-weight:800; cursor:pointer; font-family:'Cairo',sans-serif; transition:background .15s; white-space:nowrap; }
+        .hbtn:hover { background:rgba(255,255,255,0.2); }
+
+        /* ══ شريط التبويبات ══ */
+        #tabbar { display:flex; gap:4px; padding:8px 12px 0; background:#14141a; border-bottom:1px solid #26262f; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
+        #tabbar::-webkit-scrollbar { display:none; }
+        .tab { background:transparent; border:none; color:#888; font-family:'Cairo',sans-serif; font-size:12px; font-weight:800; padding:9px 14px; border-radius:10px 10px 0 0; cursor:pointer; white-space:nowrap; border-bottom:2.5px solid transparent; transition:all .15s; display:flex; align-items:center; gap:5px; }
+        .tab:hover { color:#ccc; background:rgba(255,255,255,0.04); }
+        .tab.active { color:#fff; border-bottom-color:var(--tc,#C00012); background:rgba(255,255,255,0.05); }
+
+        /* ══ منطقة المحتوى ══ */
+        #content { flex:1; position:relative; min-height:0; }
+        .pane { position:absolute; inset:0; display:none; flex-direction:column; }
+        .pane.active { display:flex; }
+
+        /* شريط أداة رفيع فوق الإطار */
+        .toolstrip { display:flex; align-items:center; gap:6px; padding:5px 12px; background:#14141a; border-bottom:1px solid #22222a; flex-shrink:0; }
+        .toolstrip .tname { font-size:11px; font-weight:800; color:#999; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .sbtn { background:rgba(255,255,255,0.07); border:none; color:#bbb; border-radius:7px; padding:4px 10px; font-size:10.5px; font-weight:700; cursor:pointer; font-family:'Cairo',sans-serif; white-space:nowrap; }
+        .sbtn:hover { background:rgba(255,255,255,0.15); color:#fff; }
+        .pane iframe { flex:1; width:100%; border:none; background:#fff; }
+
+        /* ══ تبويب الرئيسية (البطاقات) ══ */
+        #pane-home { overflow-y:auto; display:none; padding:22px 20px 40px; }
+        #pane-home.active { display:block; }
+        .wrap { max-width:1100px; margin:0 auto; }
+        .section-title { font-size:14px; font-weight:800; color:#888; margin:0 0 14px; display:flex; align-items:center; gap:8px; }
+        .section-title::after { content:''; flex:1; height:1px; background:#2a2a33; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-bottom:30px; }
+        .card { background:linear-gradient(145deg,#191920,#14141a); border:1px solid #26262f; border-radius:18px; padding:20px; cursor:pointer; transition:all .18s; position:relative; overflow:hidden; }
+        .card:hover { transform:translateY(-4px); border-color:var(--accent,#C00012); box-shadow:0 12px 32px rgba(0,0,0,0.4); }
+        .card .icon { width:48px; height:48px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:12px; background:var(--accent-bg,rgba(192,0,18,0.15)); }
+        .card .title { font-size:16px; font-weight:900; margin-bottom:4px; }
+        .card .desc { font-size:11.5px; color:#999; line-height:1.5; }
+        .card .arrow { position:absolute; top:20px; left:20px; color:#444; font-size:17px; transition:all .18s; }
+        .card:hover .arrow { color:var(--accent,#C00012); transform:translateX(-4px); }
+        .note { background:rgba(192,0,18,0.08); border:1px solid rgba(192,0,18,0.25); border-radius:12px; padding:12px 14px; font-size:11.5px; color:#c99; margin-bottom:20px; line-height:1.7; }
+    </style>
+  <script src="gmt-owner-requests.js"></script>
+<script src="gmt-features.js"></script>
+<script src="gmt-brand.js"></script>
+<script src="gmt-bugcatcher.js"></script><!-- 🐞 جامع الأخطاء (2026-07-10) -->
+  <script src="gmt-inspector.js"></script>
+    <script src="gmt-ui.js"></script>
+    <script src="gmt-sandbox.js"></script><!-- 🎓 الوضع التدريبي --><!-- 🎨 نوافذ بهويتنا + روابط مضبوطة + إصلاح المشاركة --><!-- 🔍 المفتّش: تقرير التجربة -->
+  <!-- 🎨 الهوية البصرية الموحّدة (2026-07-12) — مصدر الحقيقة الوحيد للألوان والخط -->
+  <link rel="stylesheet" href="gmt-theme.css">
+</head>
+<body>
+
+    <!-- شاشة القفل -->
+    <div id="lock">
+        <div class="lock-card">
+            <div class="lock-logo">
+                <div class="t1">General Media Tech</div>
+                <div class="t2">الأدمن الكلي — لوحة التحكم الموحّدة</div>
+                <div class="t3">وصول محصور بالإدارة العليا</div>
+            </div>
+            <input id="lockPass" type="password" placeholder="كلمة السر السيادية" onkeydown="if(event.key==='Enter')unlock()">
+            <div id="lockErr" class="lock-err">كلمة السر غير صحيحة</div>
+            <button class="lock-btn" onclick="unlock()">دخول ←</button>
+        </div>
+    </div>
+
+    <!-- الرأس -->
+    <header id="hdr" style="display:none;">
+        <div class="brand">
+            <div class="b1">🛡️ الأدمن الكلي</div>
+            <div class="b2">General Media Tech</div>
+        </div>
+        <div class="actions">
+            <button class="hbtn" onclick="openPwManager()">🔐 كلمات السر</button>
+            <button class="hbtn" onclick="resetAllUrls()">⚙️ الروابط</button>
+            <button class="hbtn" onclick="lockAgain()">🔒 قفل</button>
+        </div>
+    </header>
+
+    <!-- شريط التبويبات -->
+    <nav id="tabbar" style="display:none;">
+        <button class="tab active" id="tab-home" style="--tc:#C00012;" onclick="activateTab('home')">🏠 الرئيسية</button>
+        <button class="tab" id="tab-admin_pos" style="--tc:#C00012;" onclick="activateTab('admin_pos')">📊 أدمن نقاط البيع</button>
+        <button class="tab" id="tab-inventory" style="--tc:#0ea5e9;" onclick="activateTab('inventory')">📦 الجرد</button>
+        <button class="tab" id="tab-bridge" style="--tc:#16a34a;" onclick="activateTab('bridge')">🔗 الربط</button>
+        <button class="tab" id="tab-admin_store" style="--tc:#a855f7;" onclick="activateTab('admin_store')">🏪 أدمن المتجر</button>
+        <button class="tab" id="tab-warranty_admin" style="--tc:#f59e0b;" onclick="activateTab('warranty_admin')">📋 إدارة الكفالات</button>
+        <button class="tab" id="tab-warranty_create" style="--tc:#f59e0b;" onclick="activateTab('warranty_create')">➕ إنشاء كفالة</button>
+        <button class="tab" id="tab-contracts" style="--tc:#7c3aed;" onclick="activateTab('contracts')">📜 العقود</button>
+        <button class="tab" id="tab-backup" style="--tc:#C00012;" onclick="activateTab('backup')">💾 النسخ الاحتياطي</button>
+    </nav>
+
+    <!-- المحتوى -->
+    <div id="content" style="display:none;">
+
+        <!-- تبويب الرئيسية -->
+        <div class="pane active" id="pane-home">
+            <div class="wrap">
+                <div class="note">
+                    💡 الأدمن الكلي: كل أداة تبقى مستقلة بملفها وقاعدة بياناتها — وهنا تفتح داخل تبويبها وتبقى
+                    حيّة بالخلفية (تنقّل فوري دون إعادة تحميل). أول فتح لكل أداة يطلب رابطها المنشور
+                    (يُحفظ مرة واحدة). الأدوات الداعمة للوصول السيادي تُفتح دون تسجيل دخول إضافي.
+                </div>
+
+                <div class="section-title">🏬 إدارة نقاط البيع والمخزون</div>
+                <div class="grid">
+                    <div class="card" style="--accent:#C00012;--accent-bg:rgba(192,0,18,0.15);" onclick="activateTab('admin_pos')">
+                        <div class="arrow">←</div><div class="icon">📊</div>
+                        <div class="title">أدمن نقاط البيع</div>
+                        <div class="desc">العمولات، الفواتير، الديون، المصاريف، النقل، فاتورة الإدارة</div>
+                    </div>
+                    <div class="card" style="--accent:#C00012;--accent-bg:rgba(192,0,18,0.15);" onclick="activateTab('inventory')">
+                        <div class="arrow">←</div><div class="icon">📦</div>
+                        <div class="title">الجرد</div>
+                        <div class="desc">المنتجات، الكميات، الأسعار، النقل بين الفروع، حركة المنتج</div>
+                    </div>
+                    <div class="card" style="--accent:#16a34a;--accent-bg:rgba(22,163,74,0.15);" onclick="activateTab('bridge')">
+                        <div class="arrow">←</div><div class="icon">🔗</div>
+                        <div class="title">الربط بالمتجر</div>
+                        <div class="desc">ربط منتجات الجرد بالمتجر الإلكتروني بالباركود</div>
+                    </div>
+                </div>
+
+                <div class="section-title">🛒 المتجر الإلكتروني</div>
+                <div class="grid">
+                    <div class="card" style="--accent:#a855f7;--accent-bg:rgba(168,85,247,0.15);" onclick="activateTab('admin_store')">
+                        <div class="arrow">←</div><div class="icon">🏪</div>
+                        <div class="title">أدمن المتجر</div>
+                        <div class="desc">المنتجات، الأقسام، البانرات، العروض، المحرر المرئي</div>
+                    </div>
+                </div>
+
+                <div class="section-title">📜 العقود</div>
+                <div class="grid">
+                    <div class="card" style="--accent:#7c3aed;--accent-bg:rgba(124,58,237,0.15);" onclick="activateTab('contracts')">
+                        <div class="arrow">←</div><div class="icon">📜</div>
+                        <div class="title">أداة العقود</div>
+                        <div class="desc">عقد الاستلام والكفالة، الوكلاء، الموظفين — تعبئة تلقائية وطباعة وتصدير Word</div>
+                    </div>
+                </div>
+
+                <div class="section-title">💾 النسخ الاحتياطي</div>
+                <div class="grid">
+                    <div class="card" style="--accent:#C00012;--accent-bg:rgba(192,0,18,0.15);" onclick="activateTab('backup')">
+                        <div class="arrow">←</div><div class="icon">💾</div>
+                        <div class="title">النسخ الاحتياطي الشامل</div>
+                        <div class="desc">نسخة كاملة من القواعد الأربع + الصور بملف واحد — واستعادة عند الحاجة</div>
+                    </div>
+                </div>
+
+                <div class="section-title">🛡️ الكفالات</div>
+                <div class="grid">
+                    <div class="card" style="--accent:#f59e0b;--accent-bg:rgba(245,158,11,0.15);" onclick="activateTab('warranty_admin')">
+                        <div class="arrow">←</div><div class="icon">📋</div>
+                        <div class="title">إدارة الكفالات</div>
+                        <div class="desc">عرض، بحث، وإلغاء الكفالات (الإلغاء للإدارة فقط)</div>
+                    </div>
+                    <div class="card" style="--accent:#f59e0b;--accent-bg:rgba(245,158,11,0.15);" onclick="activateTab('warranty_create')">
+                        <div class="arrow">←</div><div class="icon">➕</div>
+                        <div class="title">إنشاء كفالة</div>
+                        <div class="desc">إنشاء كفالة جديدة (وصول سيادي — دون تسجيل دخول)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ألواح الأدوات تُنشأ ديناميكياً عند أول فتح -->
+    </div>
+
+    <script>
+        // ═══ كلمة السر السيادية — غيّرها لكلمتك ═══
+        // كلمة السر: 0000 افتراضياً — تُغيَّر من زر 🔐 (تُحفظ محلياً بهذا الجهاز)
+        const SOVEREIGN_PASSWORD = localStorage.getItem('gmt_pw_sovereign') || '0000';
+
+        // معرّفات الأدوات (مفاتيح الروابط المحفوظة نفسها من النسخة السابقة — لا تُسأل مجدداً)
+        const TOOLS = {
+            admin_pos:       { name:'أدمن نقاط البيع', sovereign:false },
+            inventory:       { name:'الجرد', sovereign:false },
+            bridge:          { name:'الربط بالمتجر (Bridge)', sovereign:false },
+            admin_store:     { name:'أدمن المتجر', sovereign:true },
+            warranty_admin:  { name:'إدارة الكفالات', sovereign:true },
+            warranty_create: { name:'إنشاء كفالة', sovereign:true },
+            contracts:       { name:'أداة العقود', sovereign:true },
+            backup:          { name:'النسخ الاحتياطي', sovereign:true },
+        };
+
+        function unlock() {
+            const v = document.getElementById('lockPass').value;
+            if (v === SOVEREIGN_PASSWORD) {
+                sessionStorage.setItem('gmt_sov_ok', '1');
+                showMain();
+            } else {
+                document.getElementById('lockErr').style.display = 'block';
+            }
+        }
+        function showMain() {
+            document.getElementById('lock').style.display = 'none';
+            document.getElementById('hdr').style.display = 'flex';
+            document.getElementById('tabbar').style.display = 'flex';
+            document.getElementById('content').style.display = 'block';
+        }
+        // إبقاء الجلسة مفتوحة أثناء نفس تبويب المتصفح
+        if (sessionStorage.getItem('gmt_sov_ok') === '1') {
+            window.addEventListener('DOMContentLoaded', showMain);
+        }
+
+        function lockAgain() {
+            sessionStorage.removeItem('gmt_sov_ok');
+            // أمان: إتلاف كل الألواح المفتوحة عند القفل
+            document.querySelectorAll('.pane[data-tool]').forEach(p => p.remove());
+            activateTab('home');
+            document.getElementById('hdr').style.display = 'none';
+            document.getElementById('tabbar').style.display = 'none';
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('lock').style.display = 'flex';
+            document.getElementById('lockPass').value = '';
+        }
+
+        function urlKey(id) { return 'gmt_sov_url_' + id; }
+
+        // الرابط النهائي للأداة (مع sovereign إن دعمته)
+        function toolUrl(id) {
+            const tool = TOOLS[id];
+            let url = localStorage.getItem(urlKey(id));
+            if (!url) {
+                url = (prompt(`أدخل رابط أداة "${tool.name}" المنشور:\n(يُحفظ مرة واحدة — يمكن تغييره لاحقاً من زر 🔗)`, 'https://general-media-tech.github.io/') || '').trim();
+                if (!url) return null;
+                localStorage.setItem(urlKey(id), url);
+            }
+            if (tool.sovereign) url += (url.includes('?') ? '&' : '?') + 'sovereign=1';
+            return url;
+        }
+
+        // ═══ التبويبات ═══
+        function activateTab(id) {
+            if (id !== 'home' && !document.getElementById('pane-' + id)) {
+                if (!buildPane(id)) return; // ألغى إدخال الرابط
+            }
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + id)?.classList.add('active');
+            document.getElementById('pane-' + id)?.classList.add('active');
+        }
+
+        // إنشاء لوح أداة (مرة واحدة — يبقى حياً بعدها)
+        function buildPane(id) {
+            const url = toolUrl(id);
+            if (!url) return false;
+            const tool = TOOLS[id];
+            const pane = document.createElement('div');
+            pane.className = 'pane';
+            pane.id = 'pane-' + id;
+            pane.dataset.tool = id;
+            pane.innerHTML = `
+                <div class="toolstrip">
+                    <span class="tname">${tool.name}</span>
+                    <button class="sbtn" onclick="reloadTool('${id}')">🔄 تحديث</button>
+                    <button class="sbtn" onclick="changeToolUrl('${id}')">🔗 الرابط</button>
+                    <button class="sbtn" onclick="openExternal('${id}')">↗ نافذة مستقلة</button>
+                </div>`;
+            const fr = document.createElement('iframe');
+            fr.id = 'frame-' + id;
+            fr.setAttribute('allow', 'camera; microphone; clipboard-read; clipboard-write; fullscreen');
+            fr.src = url;
+            pane.appendChild(fr);
+            document.getElementById('content').appendChild(pane);
+            return true;
+        }
+
+        function reloadTool(id) {
+            const fr = document.getElementById('frame-' + id);
+            const url = toolUrl(id);
+            if (fr && url) fr.src = url;
+        }
+
+        function changeToolUrl(id) {
+            const cur = localStorage.getItem(urlKey(id)) || 'https://general-media-tech.github.io/';
+            const v = (prompt(`رابط أداة "${TOOLS[id].name}":`, cur) || '').trim();
+            if (!v) return;
+            localStorage.setItem(urlKey(id), v);
+            reloadTool(id);
+        }
+
+        function openExternal(id) {
+            const url = toolUrl(id);
+            if (url) window.open(url, '_blank', 'noopener');
+        }
+
+        function resetAllUrls() {
+            if (!confirm('إعادة ضبط كل روابط الأدوات؟ ستُسأل عنها مجدداً عند الفتح.')) return;
+            Object.keys(TOOLS).forEach(id => localStorage.removeItem(urlKey(id)));
+            document.querySelectorAll('.pane[data-tool]').forEach(p => p.remove());
+            activateTab('home');
+            alert('تمت إعادة الضبط. ستُطلب الروابط عند فتح كل أداة.');
+        }
+    </script>
+<script>
+/* ═══ مدير كلمات السر الموحّد (يضبط الثلاثة من مكان واحد) ═══
+   المفاتيح تُحفظ بمتصفح هذا الجهاز، وبما أن كل الأدوات على نفس النطاق
+   (github.io) فهي تسري على الأدمن الكلي وأدمن المتجر وإدارة الكفالات معاً. */
+function openPwManager(){
+  const cur = k => localStorage.getItem(k) || '0000';
+  const ov = document.createElement('div');
+  ov.id='pw-mgr-ov';
+  ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:18px;';
+  ov.innerHTML = `
+    <div style="background:#161a22;border:1px solid #2a3040;border-radius:18px;padding:22px;max-width:380px;width:100%;color:#e7e9ee;font-family:inherit;">
+      <div style="font-size:16px;font-weight:900;margin-bottom:4px;">🔐 كلمات سر الأدوات</div>
+      <div style="font-size:11px;color:#9aa3b2;line-height:1.8;margin-bottom:14px;">
+        الافتراضي <b>0000</b> لكل الأدوات. التغيير يُحفظ <b>بهذا الجهاز/المتصفح</b> ويسري
+        على الأدوات الثلاث معاً — اضبطها مرة على كل جهاز إداري تستخدمه.
+      </div>
+      <label style="font-size:11px;font-weight:800;color:#c6ccd8;">🛡️ الأدمن الكلي</label>
+      <input id="pw-sov" value="${cur('gmt_pw_sovereign')}" style="width:100%;margin:4px 0 10px;padding:10px;border-radius:10px;border:1px solid #2a3040;background:#0e1117;color:#fff;font-size:14px;">
+      <label style="font-size:11px;font-weight:800;color:#c6ccd8;">🏬 أدمن المتجر</label>
+      <input id="pw-store" value="${cur('gmt_pw_store')}" style="width:100%;margin:4px 0 10px;padding:10px;border-radius:10px;border:1px solid #2a3040;background:#0e1117;color:#fff;font-size:14px;">
+      <label style="font-size:11px;font-weight:800;color:#c6ccd8;">🛡️ إدارة الكفالات</label>
+      <input id="pw-war" value="${cur('gmt_pw_warranty')}" style="width:100%;margin:4px 0 14px;padding:10px;border-radius:10px;border:1px solid #2a3040;background:#0e1117;color:#fff;font-size:14px;">
+      <div style="display:flex;gap:8px;">
+        <button onclick="savePwManager()" style="flex:1;background:#e11d48;color:#fff;border:none;border-radius:10px;padding:11px;font-weight:900;font-family:inherit;cursor:pointer;">حفظ</button>
+        <button onclick="document.getElementById('pw-mgr-ov').remove()" style="flex:1;background:#232936;color:#c6ccd8;border:none;border-radius:10px;padding:11px;font-weight:800;font-family:inherit;cursor:pointer;">إلغاء</button>
+      </div>
+      <div style="font-size:10px;color:#7d8698;margin-top:10px;line-height:1.7;">
+        ملاحظة: حسابات الدخول لنقطة البيع/الكفالة/العقود (اسم مستخدم + كلمة) تُدار من
+        جدول gmt_users بقاعدة البيانات وليست من هنا.
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+}
+function savePwManager(){
+  const set=(k,id)=>{ const v=document.getElementById(id).value.trim(); if(v && v!=='0000') localStorage.setItem(k,v); else localStorage.removeItem(k); };
+  set('gmt_pw_sovereign','pw-sov'); set('gmt_pw_store','pw-store'); set('gmt_pw_warranty','pw-war');
+  document.getElementById('pw-mgr-ov').remove();
+  alert('✓ حُفظت كلمات السر على هذا الجهاز — تسري من الفتح التالي لكل أداة.');
+}
+</script>
+
+    <script src="gmt-guide.js"></script><!-- 🎓 النظام التعليمي (يستبدل gmt-tour) -->
+    <script src="gmt-health-panel.js"></script><!-- 🩺 لوحة صحة النظام (للأدمن) -->
+
+<script src="gmt-selftest.js"></script>
+<script src="gmt-guide-sovereign.js"></script>
+<script src="gmt-warden.js"></script>
+<script src="gmt-autotest.js"></script>
+<script src="gmt-integration-tests.js"></script>
+</body>
+</html>
