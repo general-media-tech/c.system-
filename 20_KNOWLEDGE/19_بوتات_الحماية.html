@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🛡️ بوتات الحماية — GMT</title>
+<style>
+  :root{ --gmt-red:#C00012; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Cairo,system-ui,"Segoe UI",Tahoma,sans-serif;background:#0b0e14;color:#e7ebf2;line-height:1.8}
+  header{background:linear-gradient(135deg,#7c2d12,#4a1608);padding:26px 20px;text-align:center}
+  header h1{margin:0 0 6px;font-size:24px;font-weight:900}
+  header p{margin:0;opacity:.9;font-size:13px}
+  main{max-width:1000px;margin:0 auto;padding:20px 16px 60px}
+  .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+  .tool{background:#141a26;border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:14px;text-align:center}
+  .tool .ic{font-size:28px}
+  .tool .nm{font-weight:900;font-size:13px;margin-top:6px}
+  .tool .st{font-size:11px;color:#8b93a7;margin-top:3px}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .btn{border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:900;font-size:13px;cursor:pointer;transition:.15s}
+  .btn:active{transform:scale(.97)}
+  .primary{background:var(--gmt-red);color:#fff}
+  .green{background:#16a34a;color:#fff}
+  .ghost{background:rgba(255,255,255,.08);color:#e7ebf2;border:1px solid rgba(255,255,255,.15)}
+  .report{background:#0f131c;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px;margin-top:14px}
+  .report h3{margin:0 0 10px;font-size:15px;font-weight:900;color:#ff8b96}
+  pre{margin:0;font-size:12px;line-height:1.85;white-space:pre-wrap;color:#c9d1dc;font-family:ui-monospace,monospace;max-height:60vh;overflow:auto}
+  .hint{background:rgba(192,0,18,.1);border:1px solid rgba(192,0,18,.4);border-radius:12px;padding:12px 14px;font-size:13px;margin-bottom:16px}
+  .empty{color:#6f7789;text-align:center;padding:30px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🛡️ بوتات الحماية</h1>
+  <p>نظام المراقبة المستقل — كل تقارير البوتات في مكان واحد · انسخها دفعة واحدة أسبوعياً</p>
+</header>
+
+<main>
+  <div class="hint">
+    هذه الصفحة تجمع تقارير كل بوتات الحماية (المراقب · الحارس · المفتّش · الفاحص الذاتي).
+    اضغط <b>«📋 نسخ كل التقارير»</b> لأخذها دفعة واحدة، أو <b>«🧪 تشغيل الاختبارات الوهمية»</b>
+    لفحص النظام ذاتياً بعد النشر. الأخطاء الحسابية تبقى بدفتر المال حتى بعد الإصلاح.
+  </div>
+
+  <div class="tools" id="tools"></div>
+
+  <div class="bar">
+    <button class="btn green" id="run-all">🧪 تشغيل الاختبارات الوهمية</button>
+    <button class="btn primary" id="copy-all">📋 نسخ كل التقارير</button>
+    <button class="btn ghost" id="refresh">🔄 تحديث</button>
+    <button class="btn ghost" id="money">💰 دفتر المال فقط</button>
+  </div>
+
+  <div id="out"></div>
+</main>
+
+<!-- قاعدة المعرفة أولاً، ثم البوتات -->
+<script src="gmt-features.js"></script>
+<script src="gmt-owner-requests.js"></script>
+<script src="gmt-config.js"></script>
+<script src="gmt-bugcatcher.js"></script>
+<script src="gmt-inspector.js"></script>
+<script src="gmt-selftest.js"></script>
+<script src="gmt-sandbox.js"></script>
+<script src="gmt-warden.js"></script>
+<script src="gmt-autotest.js"></script>
+<script src="gmt-integration-tests.js"></script>
+
+<script>
+(function(){
+  'use strict';
+  // تعريف الدور كأدمن لهذه الصفحة (صفحة إدارية بحتة)
+  window.__gmtRole = 'admin';
+
+  function toolCards(){
+    var tools=[
+      {ic:'🛡️',nm:'المراقب السيادي',get:()=>window.GMTWarden,info:o=>o?o.incidents().length+' حادثة':'غير محمّل'},
+      {ic:'🐞',nm:'الحارس',get:()=>window.GMTBug,info:o=>o&&o.list?o.list().length+' خطأ':'محمّل'},
+      {ic:'🔍',nm:'المفتّش',get:()=>window.GMTInspect,info:o=>o&&o.silent?o.silent().length+' صامت':'محمّل'},
+      {ic:'🧪',nm:'الفاحص الذاتي',get:()=>window.GMTSelfTest,info:o=>o?'جاهز':'غير محمّل'},
+      {ic:'🤖',nm:'الفاحص الشامل',get:()=>window.GMTAutoTest,info:o=>o?'جاهز':'غير محمّل'},
+      {ic:'🔗',nm:'اختبارات الترابط',get:()=>window.GMTIntegrationTests,info:o=>o?o.links.length+' ترابط':'غير محمّل'},
+      {ic:'📚',nm:'سجل الميزات',get:()=>window.GMT_FEATURES,info:o=>o?o.length+' ميزة':'غير محمّل'},
+      {ic:'📜',nm:'قواعد المالك',get:()=>window.GMT_OWNER_RULES,info:o=>o?o.length+' قاعدة':'غير محمّل'}
+    ];
+    document.getElementById('tools').innerHTML=tools.map(function(t){
+      var o=t.get(); var ok=!!o;
+      return '<div class="tool"><div class="ic">'+t.ic+'</div><div class="nm">'+t.nm+'</div>'+
+        '<div class="st" style="color:'+(ok?'#4ade80':'#f87171')+'">'+(ok?t.info(o):'غير محمّل')+'</div></div>';
+    }).join('');
+  }
+
+  function collectAll(){
+    var L=[];
+    L.push('╔══════════════════════════════════════════╗');
+    L.push('║   تقرير بوتات الحماية الموحّد — GMT       ║');
+    L.push('╚══════════════════════════════════════════╝');
+    L.push('التاريخ: '+new Date().toLocaleString('ar-SY'));
+    L.push('');
+    // المراقب السيادي (الأشمل)
+    if(window.GMTWarden){ L.push(window.GMTWarden.fullReport()); L.push(''); }
+    // المفتّش
+    if(window.GMTInspect&&window.GMTInspect.report){ L.push('═══ المفتّش ═══'); L.push(window.GMTInspect.report()); L.push(''); }
+    // الحارس
+    if(window.GMTBug&&window.GMTBug.list){
+      var bugs=window.GMTBug.list();
+      L.push('═══ الحارس ('+bugs.length+' خطأ) ═══');
+      bugs.slice(-40).forEach(function(b){ L.push('  '+(b.msg||JSON.stringify(b)).slice(0,140)); });
+      L.push('');
+    }
+    return L.join('\n');
+  }
+
+  function show(txt,title){
+    document.getElementById('out').innerHTML='<div class="report"><h3>'+(title||'التقرير')+'</h3><pre>'+
+      txt.replace(/</g,'&lt;')+'</pre></div>';
+  }
+
+  document.getElementById('refresh').onclick=function(){ toolCards(); show(collectAll(),'كل التقارير'); };
+  document.getElementById('copy-all').onclick=function(){
+    var t=collectAll();
+    try{ navigator.clipboard.writeText(t); alert('✅ نُسخت كل التقارير — الصقها بملفك الأسبوعي.'); }
+    catch(e){ show(t,'انسخ يدوياً'); }
+  };
+  document.getElementById('money').onclick=function(){
+    if(!window.GMTWarden){ show('المراقب غير محمّل','دفتر المال'); return; }
+    var m=window.GMTWarden.moneyLedger();
+    if(!m.length){ show('لا فروقات مالية مسجّلة. ✅','دفتر المال'); return; }
+    var L=['═══ 💰 دفتر الفروقات المالية (لا يُمسح بالإصلاح) ═══',''];
+    var pend=0,rec=0;
+    m.forEach(function(x){ L.push((x.recovered?'✅':'⏳')+' '+x.when_human+' · '+x.title+' · '+x.money_delta+' · '+x.user+(x.why?' · '+x.why:''));
+      if(x.recovered)rec+=Math.abs(x.money_delta||0); else pend+=Math.abs(x.money_delta||0); });
+    L.push(''); L.push('المعلّق: '+pend+' · المسترجَع: '+rec);
+    show(L.join('\n'),'💰 دفتر المال');
+  };
+  document.getElementById('run-all').onclick=async function(){
+    this.textContent='⏳ جارٍ الفحص...'; this.disabled=true;
+    var out=document.getElementById('out');
+    out.innerHTML='<div class="report"><h3>🧪 الاختبارات الوهمية</h3><div class="empty">جارٍ تشغيل الفحوص على النظام الحيّ...</div></div>';
+    var lines=[];
+    if(window.GMTWarden&&window.GMTWarden.runProbes){
+      var r=await window.GMTWarden.runProbes();
+      r.forEach(function(x){ lines.push((x.ok?'✅':'🔴')+' '+x.title+' — '+x.msg); });
+    }
+    if(window.GMTIntegrationTests&&window.GMTIntegrationTests.run){
+      lines.push(''); lines.push('═══ اختبارات الترابط بين الوحدات ═══');
+      var ir=await window.GMTIntegrationTests.run();
+      ir.forEach(function(x){ lines.push((x.ok===true?'✅':x.ok===false?'🔴':'ℹ️')+' '+x.title+' — '+x.msg); });
+    }
+    if(window.GMTAutoTest&&window.GMTAutoTest.run){
+      lines.push(''); lines.push('═══ الفاحص الشامل (كل زر) ═══');
+      await window.GMTAutoTest.run();
+      var ar=window.GMTAutoTest.results?window.GMTAutoTest.results():[];
+      ar.forEach(function(x){ lines.push((x.status==='ok'?'✅':x.status==='fail'?'🔴':x.status==='warn'?'🟡':'ℹ️')+' '+x.title); });
+    }
+    if(window.GMTSelfTest&&window.GMTSelfTest.run){
+      lines.push(''); lines.push('═══ الفاحص الذاتي ═══');
+      await window.GMTSelfTest.run();
+      var res=window.GMTSelfTest.results?window.GMTSelfTest.results():[];
+      res.forEach(function(x){ lines.push((x.status==='ok'?'✅':x.status==='warn'?'🟡':'🔴')+' '+x.title); });
+    }
+    show(lines.join('\n')||'لا نتائج','🧪 نتائج الاختبارات الوهمية');
+    this.textContent='🧪 تشغيل الاختبارات الوهمية'; this.disabled=false;
+    toolCards();
+  };
+
+  // إقلاع
+  setTimeout(function(){ toolCards(); show(collectAll(),'كل التقارير عند الفتح'); }, 800);
+})();
+</script>
+</body>
+</html>
