@@ -1,0 +1,130 @@
+/* ═══════════════════════════════════════════════════════
+   أداة العقود — GMT | css/style.css
+   الهوية: أحمر #C00012 · خط Cairo · صفحات A4 حقيقية
+   ═══════════════════════════════════════════════════════ */
+:root{ --red:#C00012; --dark:#1a1a1a; --gray:#6b7280; --line:#e5e7eb; --bg:#f3f4f6; }
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',Arial,sans-serif; }
+body{ background:var(--bg); color:#111; direction:rtl; min-height:100vh; }
+
+/* ══ شاشة الدخول ══ */
+#login-screen{ position:fixed; inset:0; z-index:900; background:linear-gradient(160deg,#1a1a1a,#7c1d1d); display:flex; align-items:center; justify-content:center; padding:22px; }
+.login-card{ background:#fff; border-radius:20px; padding:34px 28px; max-width:400px; width:100%; box-shadow:0 22px 60px rgba(0,0,0,.45); }
+.login-card .t1{ font-size:25px; font-weight:900; color:var(--red); text-align:center; }
+.login-card .t2{ font-size:12px; color:#666; text-align:center; margin:5px 0 24px; font-weight:700; }
+.login-card input{ width:100%; padding:13px; border:1.5px solid #ddd; border-radius:11px; font-size:14px; margin-bottom:12px; }
+.login-card input:focus{ outline:none; border-color:var(--red); }
+#login-err{ display:none; background:#fef2f2; border:1.5px solid #fca5a5; color:#dc2626; border-radius:9px; padding:9px; font-size:12px; font-weight:700; text-align:center; margin-bottom:12px; }
+.btn{ border:none; border-radius:11px; padding:12px 16px; font-weight:800; font-size:14px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+.btn-red{ background:var(--red); color:#fff; width:100%; } .btn-red:hover{ background:#a00010; }
+.btn-gray{ background:#eef0f3; color:#374151; border:1px solid var(--line); } .btn-gray:hover{ background:#e2e5ea; }
+.btn-sm{ padding:8px 12px; font-size:12px; border-radius:9px; }
+
+/* ══ الرأس ══ */
+header{ background:linear-gradient(135deg,#1a1a1a,#2a1215); color:#fff; padding:10px 16px; display:flex; align-items:center; gap:10px; border-bottom:3px solid var(--red); position:sticky; top:0; z-index:50; }
+header .brand{ font-size:16px; font-weight:900; flex:1; display:flex; align-items:baseline; gap:8px; min-width:0; }
+header .brand small{ font-size:10px; color:#bbb; font-weight:700; }
+header .who{ font-size:11px; color:#ddd; white-space:nowrap; }
+header button{ background:rgba(255,255,255,.12); color:#fff; border:none; border-radius:9px; padding:7px 11px; font-size:11px; font-weight:800; cursor:pointer; font-family:inherit; }
+
+/* ══ الرئيسية: بطاقات الأنواع ══ */
+#home{ max-width:1000px; margin:0 auto; padding:26px 18px 60px; }
+#home .hint{ background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; border-radius:12px; padding:12px 14px; font-size:12px; font-weight:700; line-height:1.8; margin-bottom:20px; }
+.type-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+.type-card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; cursor:pointer; transition:.18s; }
+.type-card:hover{ transform:translateY(-4px); border-color:var(--red); box-shadow:0 12px 30px rgba(0,0,0,.1); }
+.type-card .ic{ font-size:30px; margin-bottom:10px; }
+.type-card .tt{ font-size:16px; font-weight:900; margin-bottom:4px; }
+.type-card .dd{ font-size:11.5px; color:var(--gray); line-height:1.7; }
+
+/* ══ مساحة العمل ══ */
+#work{ display:none; }
+#work.on{ display:grid; grid-template-columns:340px 1fr; gap:0; align-items:start; }
+@media(max-width:900px){ #work.on{ grid-template-columns:1fr; } }
+
+/* لوحة النموذج */
+#form-pane{ background:#fff; border-left:1px solid var(--line); min-height:calc(100vh - 52px); padding:16px 14px 90px; position:sticky; top:52px; max-height:calc(100vh - 52px); overflow-y:auto; }
+@media(max-width:900px){ #form-pane{ position:static; max-height:none; min-height:0; border-left:none; border-bottom:1px solid var(--line); } }
+#form-pane h2{ font-size:15px; font-weight:900; margin-bottom:4px; display:flex; align-items:center; gap:7px; }
+#form-pane .sub{ font-size:11px; color:var(--gray); margin-bottom:14px; }
+.f-label{ display:block; font-size:11.5px; font-weight:800; color:#374151; margin:11px 0 4px; }
+.f-in, .f-sel, .f-ta{ width:100%; border:1.5px solid var(--line); border-radius:9px; padding:9px 11px; font-size:13px; font-family:inherit; background:#fff; }
+.f-in:focus,.f-sel:focus,.f-ta:focus{ outline:none; border-color:var(--red); }
+.f-ta{ min-height:64px; resize:vertical; }
+.f-row{ display:flex; gap:8px; } .f-row>div{ flex:1; }
+.autofill-box{ background:#f0f9ff; border:1.5px dashed #7dd3fc; border-radius:12px; padding:11px; margin-bottom:6px; }
+.autofill-box .f-label{ margin-top:0; color:#0369a1; }
+.copies-box{ background:#fafafa; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-top:14px; }
+.copies-box label{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; padding:4px 0; cursor:pointer; }
+.copies-box input{ width:15px; height:15px; accent-color:var(--red); }
+
+/* شريط الأزرار الثابت */
+#actions{ position:fixed; bottom:0; right:0; width:340px; background:#fff; border-top:1px solid var(--line); border-left:1px solid var(--line); padding:10px 14px; display:flex; flex-wrap:wrap; gap:7px; z-index:60; }
+@media(max-width:900px){ #actions{ width:100%; border-left:none; } }
+#actions .btn{ flex:1; min-width:96px; font-size:12px; padding:10px 8px; }
+#contract-no-chip{ width:100%; text-align:center; font-size:11px; font-weight:800; color:var(--gray); }
+#contract-no-chip b{ color:var(--red); }
+
+/* لوحة المعاينة */
+#preview-pane{ padding:20px 14px 120px; }
+#edit-hint{ display:none; max-width:210mm; margin:0 auto 12px; background:#fefce8; border:1.5px solid #fde047; color:#854d0e; border-radius:11px; padding:10px 13px; font-size:12px; font-weight:800; }
+#edit-hint.on{ display:block; }
+
+/* ══ صفحة A4 ══ */
+.sheet{ width:210mm; min-height:297mm; background:#fff; margin:0 auto 20px; padding:13mm 12mm 15mm; box-shadow:0 6px 26px rgba(0,0,0,.14); position:relative; font-size:12.3px; line-height:1.95; color:#111; direction:rtl; }
+@media(max-width:900px){ .sheet{ width:100%; min-height:auto; padding:16px 14px; } }
+
+/* عناصر العقد الداخلية */
+.c-head{ display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid var(--red); padding-bottom:8px; margin-bottom:12px; }
+.c-head .logo{ font-size:21px; font-weight:900; color:var(--red); line-height:1.2; }
+.c-head .logo small{ display:block; font-size:9.5px; color:#555; font-weight:700; letter-spacing:.4px; }
+.c-head .meta{ text-align:left; font-size:10.5px; color:#333; font-weight:700; line-height:1.7; }
+.c-head .meta img{ height:34px; display:block; margin:2px 0 0 0; }
+.c-copy{ position:absolute; top:6mm; left:50%; transform:translateX(-50%); font-size:10px; font-weight:900; color:#fff; background:var(--red); padding:2px 14px; border-radius:99px; letter-spacing:.5px; }
+.c-copy.client{ background:#0e7490; }
+.c-title{ text-align:center; font-size:17px; font-weight:900; margin:6px 0 10px; }
+.c-title small{ display:block; font-size:10.5px; color:var(--gray); font-weight:700; }
+.c-art{ margin:9px 0; }
+.c-art h4{ font-size:13px; font-weight:900; color:var(--red); margin-bottom:3px; }
+.c-art p, .c-art li{ font-size:12.2px; text-align:justify; }
+.c-art ol, .c-art ul{ padding-right:20px; }
+.c-art li{ margin-bottom:3px; }
+table.c-data{ width:100%; border-collapse:collapse; margin:8px 0; }
+table.c-data td{ border:1px solid #ccc; padding:6px 9px; font-size:12px; }
+table.c-data td.k{ background:#f5f5f5; font-weight:800; width:31%; white-space:nowrap; }
+.serial-hl{ background:#fff3f3; border:1.5px solid var(--red); font-weight:900; letter-spacing:1px; direction:ltr; text-align:center; }
+.tier{ border:1.5px solid #ddd; border-radius:10px; padding:9px 11px; margin:7px 0; page-break-inside:avoid; }
+.tier.sel{ border-color:var(--red); background:#fff7f7; }
+.tier .tname{ font-weight:900; font-size:12.6px; display:flex; align-items:center; gap:8px; }
+.tier .box{ display:inline-block; width:15px; height:15px; border:2px solid #444; border-radius:3px; text-align:center; line-height:12px; font-size:11px; font-weight:900; }
+.tier.sel .box{ border-color:var(--red); color:var(--red); }
+.tier ul{ margin:4px 18px 0 0; }
+.tier .sig-mini{ font-size:10.5px; color:#555; margin-top:5px; border-top:1px dashed #ddd; padding-top:4px; }
+.sign-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+.sign-box{ border:1.5px solid #bbb; border-radius:11px; padding:10px 12px 44px; font-size:11.5px; font-weight:800; page-break-inside:avoid; }
+.sign-box .role{ color:var(--red); font-size:12px; }
+.sign-box .ln{ margin-top:6px; color:#555; font-weight:700; font-size:10.5px; }
+.thumb-box{ float:left; width:52px; height:62px; border:1.5px dashed #999; border-radius:8px; text-align:center; font-size:8.5px; color:#777; padding-top:44px; font-weight:700; }
+.nfc-frame{ width:66mm; height:42mm; border:2.2px dashed var(--red); border-radius:12px; display:flex; align-items:center; justify-content:center; text-align:center; font-size:10.5px; font-weight:800; color:#a33; margin:8px auto; background:#fffafa; }
+.c-note{ background:#f8fafc; border:1px solid #e2e8f0; border-radius:9px; padding:7px 10px; font-size:10.8px; color:#475569; margin:8px 0; }
+/* ══ إضافات إصدار العقود 2 (2026-07-12) ══ */
+table.c-data th{ border:1px solid #ccc; padding:6px 9px; font-size:11.5px; background:#fdeaea; color:#7f1d1d; font-weight:900; }
+table.c-table td{ height:24px; }
+table.c-table{ page-break-inside:avoid; }
+.chk-list{ list-style:none; padding-right:0; margin:4px 0; }
+.chk-list li{ font-size:12px; margin-bottom:5px; }
+.chk-list .chk{ display:inline-block; width:14px; height:14px; border:1.6px solid #444; border-radius:3px; margin-left:6px; vertical-align:-2px; }
+.c-art{ page-break-inside:avoid; }
+.c-art h4{ page-break-after:avoid; }
+.c-foot{ position:absolute; bottom:6mm; right:12mm; left:12mm; border-top:1px solid #ddd; padding-top:4px; display:flex; justify-content:space-between; font-size:9.5px; color:#666; font-weight:700; }
+.pageno{ font-weight:900; }
+.law-line{ font-size:9.5px; }
+
+/* ══ الطباعة ══ */
+@media print{
+  body{ background:#fff; }
+  header, #form-pane, #actions, #edit-hint, .no-print{ display:none !important; }
+  #work.on{ display:block; }
+  #preview-pane{ padding:0; }
+  .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; page-break-after:always; }
+  .sheet:last-child{ page-break-after:auto; }
+}
