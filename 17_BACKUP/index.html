@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>النسخ الاحتياطي — GMT</title>
+<script src="gmt-owner-requests.js"></script>
+<script src="gmt-features.js"></script>
+<script src="gmt-brand.js"></script>
+<script src="gmt-bugcatcher.js"></script><!-- 🐞 جامع الأخطاء -->
+  <script src="gmt-inspector.js"></script>
+    <script src="gmt-ui.js"></script>
+    <script src="gmt-sandbox.js"></script><!-- 🎓 الوضع التدريبي --><!-- 🎨 نوافذ بهويتنا + روابط مضبوطة + إصلاح المشاركة --><!-- 🔍 المفتّش: تقرير التجربة -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{--red:#C00012;--dark:#0e1117;--card:#161a22;--line:#2a3040;--txt:#e7e9ee;--txt2:#9aa3b2;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',Arial,sans-serif;}
+body{background:var(--dark);color:var(--txt);direction:rtl;min-height:100vh;padding:16px;}
+.wrap{max-width:820px;margin:0 auto;}
+header{display:flex;align-items:center;gap:12px;padding:14px 0 18px;border-bottom:2px solid var(--red);margin-bottom:20px;}
+header .t{flex:1;}
+header h1{font-size:20px;font-weight:900;}
+header p{font-size:11.5px;color:var(--txt2);font-weight:700;margin-top:2px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px;}
+.card h2{font-size:15px;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.card .sub{font-size:11.5px;color:var(--txt2);font-weight:700;line-height:1.8;margin-bottom:14px;}
+.opt{display:flex;align-items:center;gap:9px;padding:9px 11px;background:#0e1117;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;cursor:pointer;}
+.opt input{width:17px;height:17px;accent-color:var(--red);}
+.opt .n{flex:1;font-size:12.5px;font-weight:800;}
+.opt .d{font-size:10.5px;color:var(--txt2);font-weight:700;}
+.btn{width:100%;border:none;border-radius:12px;padding:14px;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-red{background:linear-gradient(135deg,#C00012,#8a000d);color:#fff;}
+.btn-red:disabled{opacity:.55;cursor:wait;}
+.btn-ghost{background:#232936;color:#c6ccd8;border:1px solid var(--line);}
+#log{background:#080a0e;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:11px;line-height:2;max-height:230px;overflow:auto;margin-top:12px;display:none;font-family:monospace;direction:ltr;text-align:left;}
+#log.on{display:block;}
+#log .ok{color:#4ade80;} #log .err{color:#f87171;} #log .inf{color:#93c5fd;}
+.bar{height:7px;background:#0e1117;border-radius:99px;overflow:hidden;margin-top:12px;display:none;}
+.bar.on{display:block;}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#C00012,#ef4444);width:0;transition:width .3s;}
+.warn{background:#2a1512;border:1px solid #7f1d1d;color:#fca5a5;border-radius:11px;padding:11px 13px;font-size:11.5px;font-weight:800;line-height:1.9;}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;margin-top:12px;}
+.stat div{background:#0e1117;border:1px solid var(--line);border-radius:11px;padding:10px;text-align:center;}
+.stat .v{font-size:17px;font-weight:900;color:#4ade80;}
+.stat .k{font-size:10px;color:var(--txt2);font-weight:700;margin-top:2px;}
+input[type=file]{width:100%;background:#0e1117;border:1px dashed var(--line);border-radius:11px;padding:12px;color:var(--txt2);font-size:12px;font-family:inherit;margin-bottom:10px;}
+</style>
+  <!-- 🎨 الهوية البصرية الموحّدة (2026-07-12) — مصدر الحقيقة الوحيد للألوان والخط -->
+  <link rel="stylesheet" href="gmt-theme.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div style="font-size:32px;">💾</div>
+    <div class="t">
+      <h1>النسخ الاحتياطي الشامل</h1>
+      <p>General Media Tech — نسخة كاملة من القواعد الأربع + الصور</p>
+    </div>
+  </header>
+
+  <!-- النسخ -->
+  <div class="card">
+    <h2>📦 إنشاء نسخة احتياطية</h2>
+    <div class="sub">
+      يقرأ كل جداول القواعد الأربع (نقاط البيع والمخزون والفواتير والعمولات والتسويات
+      والأوردرات والكفالات والعقود والمتجر والموقع) ويحزمها بملف ZIP واحد ينزل على جهازك.
+      <b>عملية قراءة فقط — لا تُعدّل شيئاً.</b>
+    </div>
+    <label class="opt"><input type="checkbox" id="o-main" checked><span class="n">🏪 القاعدة الرئيسية <span class="d">— المنتجات، الفروع، الفواتير، العمولات، التسويات، الأوردرات، المستخدمون، المشتريات</span></span></label>
+    <label class="opt"><input type="checkbox" id="o-store" checked><span class="n">🛒 قاعدة المتجر <span class="d">— بيانات المتجر الإلكتروني</span></span></label>
+    <label class="opt"><input type="checkbox" id="o-war" checked><span class="n">🛡️ قاعدة الكفالة <span class="d">— الكفالات والعقود</span></span></label>
+    <label class="opt"><input type="checkbox" id="o-site" checked><span class="n">🌐 قاعدة الموقع <span class="d">— محتوى الموقع والوكلاء</span></span></label>
+    <label class="opt"><input type="checkbox" id="o-img"><span class="n">🖼️ الصور (دلو gmt-images) <span class="d">— تنزيل الصور فعلياً (أبطأ وأثقل — بلا تحديد تُحفظ روابطها فقط)</span></span></label>
+    <button class="btn btn-red" id="go">💾 إنشاء النسخة وتنزيلها</button>
+    <div class="bar" id="bar"><i id="bari"></i></div>
+    <div id="log"></div>
+    <div class="stat" id="stat" style="display:none;"></div>
+  </div>
+
+  <!-- الاستعادة -->
+  <div class="card">
+    <h2>♻️ الاستعادة من نسخة</h2>
+    <div class="sub">ارفع ملف النسخة (ZIP أو JSON) لتصفّح محتواه واستعادة جدول بعينه.</div>
+    <div class="warn">
+      ⚠️ <b>الاستعادة عملية خطرة:</b> تُدرج صفوف النسخة فوق البيانات الحالية وقد تُنشئ
+      تكراراً. استعملها فقط عند فقدان بيانات فعلي، وبعد أخذ نسخة جديدة من الوضع الحالي.
+      تتم بتأكيد مزدوج ولجدول واحد في كل مرة.
+    </div>
+    <div style="margin-top:12px;">
+      <input type="file" id="restore-file" accept=".zip,.json">
+      <div id="restore-body"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💡 نصائح</h2>
+    <div class="sub" style="margin:0;">
+      • خذ نسخة <b>أسبوعياً</b> (أو قبل أي تعديل كبير) واحتفظ بها خارج الجهاز (بريد/سحابة).<br>
+      • النسخة ملف مقروء (JSON) — تستطيع فتحه بأي محرر أو استيراده لإكسل.<br>
+      • الصور محفوظة أصلاً بسوبابيس؛ تنزيلها هنا للأرشفة الكاملة فقط.<br>
+      • الاستعادة الكاملة للقاعدة يفضَّل عملها من لوحة Supabase مباشرة (Database → Backups).
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   أداة النسخ الاحتياطي — GMT (2026-07-11)
+   قراءة فقط من القواعد الأربع + حزم ZIP + استعادة انتقائية.
+   ═══════════════════════════════════════════════════════ */
+const DBS = {
+  main: { name:'الرئيسية', url:'https://ysawzwtmodkqqbqoiojj.supabase.co',
+    key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlzYXd6d3Rtb2RrcXFicW9pb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NjI0OTUsImV4cCI6MjA5MjAzODQ5NX0.g-dBDpHzMsP_0IQAKFxzWkKzc_I13bGUMeYNgcUmrKQ',
+    tables:['products','inv_columns','invoices','invoice_items','invoice_commissions','gmt_settlements','branch_transfers','gmt_orders','gmt_offers','gmt_users','import_log','expenses','coupons','stock_transfers','manual_debts','customers'] },
+  store:{ name:'المتجر', url:'https://tupldwylzrkjzqtaiscv.supabase.co',
+    key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1cGxkd3lsenJranp0YWlzY3YiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc1MDc4ODcwOCwiZXhwIjoyMDY2MzY0NzA4fQ.eKPRvbcnDGYYnhcMuqmoWuOu-Vjnvo8FWMkjcLqKZQg',
+    tables:['gmt_store'], bucket:'gmt-images' },
+  war:  { name:'الكفالة', url:'https://abppuwylukzpqckazegk.supabase.co',
+    key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFicHB1d3lsdWt6cHFja2F6ZWdrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNTQ4NzYsImV4cCI6MjA5ODczMDg3Nn0.Dx6WCUfXD4T8D_tJclB9VuMUS3B0YSwejexrRrYhnqo',
+    tables:['warranties','contracts'] },
+  site: { name:'الموقع', url:'https://znpakcaizvkwqzhosxvm.supabase.co',
+    key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpucGFrY2Fpendrd3F6aG9zeHZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3ODcyNTUsImV4cCI6MjA2NjM2MzI1NX0.gGkP7Zx8YFLbBnKQ0XN5vqPvVj0JqAqXlMxFXMr9Zwg',
+    tables:['site_settings','nav_items','hero_slides','service_cards','banners','quick_links','why_us_features','news_cards','footer_links','agents'] },
+};
+
+const $ = id => document.getElementById(id);
+const log = (m, cls='inf') => { const L=$('log'); L.classList.add('on'); L.innerHTML += `<div class="${cls}">${m}</div>`; L.scrollTop = L.scrollHeight; };
+const prog = p => { $('bar').classList.add('on'); $('bari').style.width = p + '%'; };
+
+async function fetchTable(db, table) {
+  const out = []; let from = 0; const step = 1000;
+  for (;;) {
+    const r = await fetch(`${db.url}/rest/v1/${table}?select=*&limit=${step}&offset=${from}`, {
+      headers: { apikey: db.key, Authorization: 'Bearer ' + db.key },
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const rows = await r.json();
+    if (!Array.isArray(rows)) throw new Error('استجابة غير متوقعة');
+    out.push(...rows);
+    if (rows.length < step) break;
+    from += step;
+  }
+  return out;
+}
+
+$('go').onclick = async () => {
+  const btn = $('go'); btn.disabled = true; btn.textContent = '⏳ جارٍ العمل...';
+  $('log').innerHTML = ''; $('stat').style.display = 'none';
+  const picks = [['main','o-main'],['store','o-store'],['war','o-war'],['site','o-site']].filter(([k,id]) => $(id).checked).map(([k]) => k);
+  const withImages = $('o-img').checked;
+  const zip = new JSZip();
+  const stamp = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  const summary = { created_at: new Date().toISOString(), databases: {} };
+  let done = 0, totalRows = 0, errors = 0;
+  const totalSteps = picks.reduce((s,k) => s + DBS[k].tables.length, 0) + (withImages ? 1 : 0);
+
+  for (const k of picks) {
+    const db = DBS[k];
+    log(`▶ ${db.name}`, 'inf');
+    const bag = {};
+    for (const t of db.tables) {
+      try {
+        const rows = await fetchTable(db, t);
+        bag[t] = rows; totalRows += rows.length;
+        log(`   ✓ ${t}: ${rows.length} سجل`, 'ok');
+      } catch (e) {
+        errors++;
+        bag[t] = { __error: e.message };
+        log(`   ✗ ${t}: ${e.message} (تخطّي)`, 'err');
+      }
+      prog(Math.round((++done / totalSteps) * 100));
+    }
+    zip.file(`${k}_${db.name}.json`, JSON.stringify(bag, null, 2));
+    summary.databases[k] = { name: db.name, tables: Object.fromEntries(db.tables.map(t => [t, Array.isArray(bag[t]) ? bag[t].length : 'خطأ'])) };
+  }
+
+  // الصور (اختياري)
+  if (withImages) {
+    log('▶ الصور (gmt-images)', 'inf');
+    try {
+      const db = DBS.store;
+      const r = await fetch(`${db.url}/storage/v1/object/list/${db.bucket}`, {
+        method: 'POST',
+        headers: { apikey: db.key, Authorization: 'Bearer ' + db.key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ limit: 1000, offset: 0, prefix: '' }),
+      });
+      const files = await r.json();
+      if (Array.isArray(files) && files.length) {
+        const folder = zip.folder('images');
+        let i = 0;
+        for (const f of files) {
+          try {
+            const ir = await fetch(`${db.url}/storage/v1/object/public/${db.bucket}/${encodeURIComponent(f.name)}`);
+            if (ir.ok) { folder.file(f.name, await ir.blob()); i++; }
+          } catch (_) {}
+        }
+        log(`   ✓ نُزّلت ${i} من ${files.length} صورة`, 'ok');
+        summary.images = i;
+      } else { log('   — لا صور أو الدلو غير عام', 'err'); }
+    } catch (e) { errors++; log(`   ✗ الصور: ${e.message}`, 'err'); }
+    prog(100);
+  }
+
+  zip.file('_ملخص_النسخة.json', JSON.stringify(summary, null, 2));
+  zip.file('_اقرأني.txt',
+`نسخة احتياطية — نظام GMT
+التاريخ: ${new Date().toLocaleString('ar-SY')}
+القواعد المشمولة: ${picks.map(k => DBS[k].name).join(' · ')}
+إجمالي السجلات: ${totalRows}
+${withImages ? 'الصور: مضمّنة بمجلد images' : 'الصور: غير مضمّنة (محفوظة بسوبابيس)'}
+
+═══════════════════════════════════════════════════════
+هذه النسخة تحوي «البيانات». لاستعادة النظام كاملاً:
+═══════════════════════════════════════════════════════
+
+▸ استعادة جدول أو بيانات فقط (القاعدة موجودة):
+  افتح أداة النسخ → «الاستعادة» → ارفع هذا الملف.
+
+▸ استعادة كاملة على قاعدة جديدة فارغة (النظام يعمل فوراً):
+  ١. شغّل ملفات البنية (مجلد 07_SQL_استعادة_كاملة بحزمة المشروع)
+     على قاعدتك الجديدة — تُبنى كل الجداول والدوال.
+  ٢. ارفع هذا الملف بأداة الاستعادة — ترجع بياناتك.
+  ٣. النظام يعمل فوراً.
+
+▸ الأضمن للطوارئ الكاملة:
+  Supabase → Database → Backups (نسخة كاملة فورية بضغطة).
+
+تنبيه: الاستعادة تُدرج الصفوف فوق الموجود وقد تُنشئ تكراراً — عند الفقدان فقط.`);
+
+  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `GMT-backup-${stamp}.zip`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+
+  $('stat').style.display = 'grid';
+  $('stat').innerHTML =
+    `<div><div class="v">${totalRows.toLocaleString()}</div><div class="k">سجل محفوظ</div></div>` +
+    `<div><div class="v">${picks.length}</div><div class="k">قاعدة</div></div>` +
+    `<div><div class="v">${(blob.size/1048576).toFixed(2)} MB</div><div class="k">حجم الملف</div></div>` +
+    `<div><div class="v" style="color:${errors?'#f87171':'#4ade80'}">${errors}</div><div class="k">أخطاء</div></div>`;
+  log(`✅ اكتملت النسخة — ${totalRows} سجل · ${(blob.size/1048576).toFixed(2)} MB`, 'ok');
+  btn.disabled = false; btn.textContent = '💾 إنشاء النسخة وتنزيلها';
+};
+
+/* ══ الاستعادة ══ */
+let restoreData = null;
+$('restore-file').onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const body = $('restore-body');
+  body.innerHTML = '<div style="color:#9aa3b2;font-size:12px;font-weight:700;">جارٍ القراءة…</div>';
+  try {
+    let files = {};
+    if (f.name.endsWith('.zip')) {
+      const zip = await JSZip.loadAsync(f);
+      for (const name of Object.keys(zip.files)) {
+        if (name.endsWith('.json') && !name.startsWith('_')) files[name] = JSON.parse(await zip.files[name].async('string'));
+      }
+    } else { files[f.name] = JSON.parse(await f.text()); }
+    restoreData = files;
+    let html = '';
+    for (const [fname, bag] of Object.entries(files)) {
+      const dbKey = fname.split('_')[0];
+      const db = DBS[dbKey];
+      if (!db) continue;
+      html += `<div style="font-size:12px;font-weight:900;margin:12px 0 6px;">📁 ${db.name}</div>`;
+      for (const [t, rows] of Object.entries(bag)) {
+        if (!Array.isArray(rows) || !rows.length) continue;
+        html += `<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#0e1117;border:1px solid #2a3040;border-radius:9px;margin-bottom:6px;">
+          <div style="flex:1;font-size:11.5px;font-weight:800;">${t} <span style="color:#9aa3b2;font-weight:700;">(${rows.length} سجل)</span></div>
+          <button onclick="doRestore('${dbKey}','${fname}','${t}')" style="background:#7f1d1d;color:#fecaca;border:1px solid #b91c1c;border-radius:8px;padding:6px 11px;font-family:inherit;font-size:10.5px;font-weight:800;cursor:pointer;">استعادة</button>
+        </div>`;
+      }
+    }
+    body.innerHTML = html || '<div style="color:#f87171;font-size:12px;font-weight:800;">لم أجد جداول صالحة بالملف</div>';
+  } catch (err) { body.innerHTML = `<div style="color:#f87171;font-size:12px;font-weight:800;">تعذّرت القراءة: ${err.message}</div>`; }
+};
+
+async function doRestore(dbKey, fname, table) {
+  const rows = restoreData[fname][table];
+  const db = DBS[dbKey];
+  if (!confirm(`استعادة ${rows.length} سجل إلى «${table}» بقاعدة ${db.name}؟\n\n⚠️ قد يُنشئ تكراراً إن كانت البيانات موجودة.`)) return;
+  if (!confirm('تأكيد أخير — هذه العملية تكتب بقاعدة البيانات الحقيقية. متابعة؟')) return;
+  try {
+    let ok = 0;
+    for (let i = 0; i < rows.length; i += 200) {
+      const chunk = rows.slice(i, i + 200);
+      const r = await fetch(`${db.url}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: { apikey: db.key, Authorization: 'Bearer ' + db.key, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify(chunk),
+      });
+      if (r.ok) ok += chunk.length;
+    }
+    alert(`✅ استُعيد ${ok} من ${rows.length} سجل إلى ${table}`);
+  } catch (e) { alert('تعذّرت الاستعادة: ' + e.message); }
+}
+</script>
+
+    <script src="gmt-guide.js"></script><!-- 🎓 النظام التعليمي (يستبدل gmt-tour) -->
+
+<script src="gmt-selftest.js"></script>
+<script src="gmt-guide-backup.js"></script>
+<script src="gmt-warden.js"></script>
+<script src="gmt-autotest.js"></script>
+<script src="gmt-integration-tests.js"></script>
+</body>
+</html>
