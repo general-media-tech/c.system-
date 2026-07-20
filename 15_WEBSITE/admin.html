@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة التحكم — General Media Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  window.SUPABASE_URL      = 'https://znpakcaizvkwqzhosxvm.supabase.co';
+  window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpucGFrY2FpenZrd3F6aG9zeHZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMzM0NTMsImV4cCI6MjA5NTkwOTQ1M30.YW3YuT-RRTpKw5WeFHkPeTUcXBBtaQFGCaCrBQWykks';
+</script>
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN: Dark glass admin — Canon red accents
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#CC0000; --red2:#ff2222; --red-dim:rgba(204,0,0,.15);
+  --bg:#0d0d0f; --bg2:#141418; --bg3:#1c1c22; --bg4:#242430;
+  --card:#1a1a22; --card2:#202028;
+  --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.12);
+  --t1:#f0f0f4; --t2:#9090a0; --t3:#606070;
+  --green:#22c55e; --yellow:#f59e0b; --blue:#3b82f6;
+  --font:'Noto Kufi Arabic',sans-serif;
+  --radius:12px; --radius2:8px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --sidebar-w:220px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);direction:rtl;font-size:13px;display:flex}
+
+/* ══ SIDEBAR ══ */
+#sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--bg2);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  height:100vh;overflow-y:auto;
+  position:relative;z-index:10;
+}
+.sb-logo{
+  padding:20px 16px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.sb-logo-icon{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.sb-logo-text{line-height:1.2}
+.sb-logo-text .t1{font-size:12px;font-weight:800;color:var(--t1)}
+.sb-logo-text .t2{font-size:9px;color:var(--t2)}
+
+.sb-section{padding:12px 10px 4px;font-size:9px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase}
+
+.sb-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 14px;margin:1px 6px;
+  border-radius:var(--radius2);cursor:pointer;
+  color:var(--t2);font-size:12px;font-weight:500;
+  transition:all .18s;border:none;background:none;
+  width:calc(100% - 12px);text-align:right;
+  font-family:var(--font);
+}
+.sb-item:hover{background:var(--bg4);color:var(--t1)}
+.sb-item.active{background:var(--red-dim);color:var(--red);font-weight:700}
+.sb-item .sb-ico{width:16px;height:16px;flex-shrink:0;opacity:.7}
+.sb-item.active .sb-ico{opacity:1}
+.sb-badge{
+  margin-right:auto;
+  background:var(--red);color:#fff;
+  font-size:8px;padding:1px 6px;border-radius:10px;font-weight:700;
+}
+
+.sb-footer{
+  margin-top:auto;padding:12px;
+  border-top:1px solid var(--border);
+  font-size:10px;color:var(--t3);text-align:center;
+}
+
+/* ══ MAIN ══ */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ══ TOPBAR ══ */
+#topbar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:0 20px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.tb-title{font-size:15px;font-weight:800;color:var(--t1)}
+.tb-sub{font-size:10px;color:var(--t2);margin-top:1px}
+.tb-actions{display:flex;align-items:center;gap:10px}
+.btn-sm{
+  padding:6px 14px;border-radius:var(--radius2);border:none;cursor:pointer;
+  font-family:var(--font);font-size:11px;font-weight:700;
+  transition:all .18s;display:flex;align-items:center;gap:5px;
+}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red2)}
+.btn-ghost{background:var(--bg4);color:var(--t2);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--t1);border-color:var(--t2)}
+.btn-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.btn-green:hover{background:rgba(34,197,94,.25)}
+
+/* ══ CONTENT AREA ══ */
+#content{flex:1;overflow-y:auto;padding:20px}
+
+/* ══ TOAST ══ */
+#toast-container{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%);
+  z-index:9999;display:flex;flex-direction:column;gap:8px;
+  pointer-events:none;
+}
+.toast{
+  padding:10px 18px;border-radius:var(--radius2);
+  font-size:12px;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+  animation:toastIn .3s ease;
+  pointer-events:all;min-width:220px;
+  box-shadow:var(--shadow);
+}
+.toast.success{background:#14532d;color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.toast.error  {background:#450a0a;color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.toast.info   {background:#1e3a5f;color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ SECTION PANELS ══ */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ══ CARDS / GRID ══ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;
+}
+.stat-label{font-size:10px;color:var(--t2);margin-bottom:6px;font-weight:600;letter-spacing:.5px}
+.stat-val{font-size:26px;font-weight:900;color:var(--t1)}
+.stat-sub{font-size:9px;color:var(--t3);margin-top:3px}
+.stat-ico{font-size:22px;float:left;opacity:.4}
+
+/* ══ TABLE ══ */
+.data-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:16px;
+}
+.data-card-header{
+  padding:14px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.data-card-title{font-size:13px;font-weight:700;color:var(--t1)}
+.data-card-sub{font-size:10px;color:var(--t2);margin-top:2px}
+table{width:100%;border-collapse:collapse}
+th{
+  padding:10px 14px;text-align:right;
+  font-size:10px;font-weight:700;color:var(--t3);
+  letter-spacing:.5px;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+  background:var(--bg3);
+}
+td{
+  padding:11px 14px;font-size:12px;color:var(--t2);
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg4);color:var(--t1)}
+.td-main{color:var(--t1);font-weight:600}
+.td-url{color:var(--blue);font-size:11px;direction:ltr;text-align:left}
+.td-actions{display:flex;gap:6px;justify-content:flex-end}
+
+/* status badge */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700}
+.badge.on {background:rgba(34,197,94,.15);color:var(--green)}
+.badge.off{background:rgba(239,68,68,.12);color:#f87171}
+.badge.top{background:rgba(59,130,246,.15);color:var(--blue)}
+.badge.bot{background:rgba(245,158,11,.15);color:var(--yellow)}
+
+/* ══ FORM MODAL ══ */
+#modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  z-index:1000;align-items:center;justify-content:center;
+}
+#modal-overlay.open{display:flex}
+.modal{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:16px;width:520px;max-width:95vw;
+  max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  animation:modalIn .25s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{
+  padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.modal-title{font-size:14px;font-weight:800;color:var(--t1)}
+.modal-body{padding:18px 20px;overflow-y:auto;flex:1}
+.modal-footer{
+  padding:14px 20px;border-top:1px solid var(--border);
+  display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;
+}
+.btn-close{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg4);border:none;cursor:pointer;
+  color:var(--t2);font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;
+}
+.btn-close:hover{background:var(--red);color:#fff}
+
+/* form fields */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:6px;letter-spacing:.3px}
+.form-input,.form-select,.form-textarea{
+  width:100%;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--radius2);padding:9px 12px;
+  color:var(--t1);font-family:var(--font);font-size:12px;
+  outline:none;transition:border-color .18s;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--red)}
+.form-textarea{resize:vertical;min-height:80px}
+.form-select option{background:var(--bg3)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-hint{font-size:9px;color:var(--t3);margin-top:4px}
+
+/* toggle switch */
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{
+  position:absolute;inset:0;background:var(--bg4);
+  border-radius:20px;cursor:pointer;transition:.2s;
+  border:1px solid var(--border2);
+}
+.toggle input:checked + .toggle-slider{background:var(--red);border-color:var(--red)}
+.toggle-slider::before{
+  content:'';position:absolute;
+  width:14px;height:14px;background:#fff;border-radius:50%;
+  bottom:2px;right:2px;transition:.2s;
+}
+.toggle input:checked + .toggle-slider::before{transform:translateX(-16px)}
+
+/* image upload */
+.upload-area{
+  border:2px dashed var(--border2);border-radius:var(--radius2);
+  padding:20px;text-align:center;cursor:pointer;
+  transition:all .18s;background:var(--bg3);
+}
+.upload-area:hover{border-color:var(--red);background:var(--red-dim)}
+.upload-preview{
+  max-width:100%;max-height:120px;border-radius:var(--radius2);
+  margin:8px auto 0;display:block;
+  border:1px solid var(--border);
+}
+
+/* drag handle */
+.drag-handle{
+  cursor:grab;color:var(--t3);font-size:14px;padding:2px 4px;
+  transition:color .15s;
+}
+.drag-handle:hover{color:var(--t1)}
+.dragging{opacity:.5;background:var(--red-dim)!important}
+
+/* color picker */
+.color-row{display:flex;align-items:center;gap:8px}
+.color-swatch{
+  width:28px;height:28px;border-radius:6px;border:1px solid var(--border2);
+  cursor:pointer;flex-shrink:0;
+}
+input[type=color]{width:0;height:0;opacity:0;position:absolute}
+
+/* icon grid */
+.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px}
+.icon-opt{
+  padding:8px 4px;border-radius:var(--radius2);border:1.5px solid var(--border);
+  cursor:pointer;text-align:center;transition:all .15s;background:var(--bg3);
+}
+.icon-opt:hover{border-color:var(--t2)}
+.icon-opt.sel{border-color:var(--red);background:var(--red-dim)}
+.icon-opt svg{width:18px;height:18px;stroke:var(--t2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto 3px}
+.icon-opt.sel svg{stroke:var(--red)}
+.icon-opt span{font-size:8px;color:var(--t3)}
+.icon-opt.sel span{color:var(--red)}
+
+/* order badge */
+.order-badge{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg4);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:var(--t2);
+  flex-shrink:0;
+}
+
+/* empty state */
+.empty-state{
+  text-align:center;padding:40px 20px;color:var(--t3);
+}
+.empty-state .empty-ico{font-size:40px;margin-bottom:10px;opacity:.4}
+.empty-state p{font-size:12px}
+
+/* loading spinner */
+.spinner{
+  width:20px;height:20px;border:2px solid var(--border2);
+  border-top-color:var(--red);border-radius:50%;
+  animation:spin .7s linear infinite;
+  display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* responsive: collapse sidebar on small screens */
+@media(max-width:768px){
+  #sidebar{position:fixed;right:0;top:0;height:100%;z-index:100;transform:translateX(0);transition:.25s}
+  #sidebar.hidden{transform:translateX(100%)}
+  #main{margin-right:0}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+  <script src="gmt-brand.js"></script>
+<script src="gmt-bugcatcher.js"></script><!-- 🐞 جامع الأخطاء (2026-07-10) -->
+  <script src="gmt-inspector.js"></script>
+    <script src="gmt-ui.js"></script><!-- 🎨 نوافذ بهويتنا + روابط مضبوطة + إصلاح المشاركة --><!-- 🔍 المفتّش: تقرير التجربة -->
+  <script src="gmt-sandbox.js"></script><!-- 🎓 وضع تدريبي: افتح بـ ?training=1 -->
+  <!-- 🎨 الهوية البصرية الموحّدة (2026-07-12) — مصدر الحقيقة الوحيد للألوان والخط -->
+  <link rel="stylesheet" href="gmt-theme.css">
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-icon">📷</div>
+    <div class="sb-logo-text">
+      <div class="t1">لوحة التحكم</div>
+      <div class="t2">General Media Tech</div>
+    </div>
+  </div>
+
+  <div class="sb-section">الرئيسية</div>
+  <button class="sb-item active" onclick="showPanel('dashboard')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    نظرة عامة
+  </button>
+
+  <div class="sb-section">المحتوى</div>
+  <button class="sb-item" onclick="showPanel('settings')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+    إعدادات الموقع
+  </button>
+  <button class="sb-item" onclick="showPanel('nav')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    قائمة التنقل
+  </button>
+  <button class="sb-item" onclick="showPanel('agents')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    وكلاؤنا المعتمدون
+  </button>
+  <button class="sb-item" onclick="showPanel('hero')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+    السلايدر الرئيسي
+  </button>
+  <button class="sb-item" onclick="showPanel('service')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    بطاقات الخدمات
+  </button>
+  <button class="sb-item" onclick="showPanel('banners')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/></svg>
+    البانرات
+  </button>
+  <button class="sb-item" onclick="showPanel('quicklinks')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+    الروابط السريعة
+  </button>
+  <button class="sb-item" onclick="showPanel('whyus')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    لماذا تختارنا
+  </button>
+  <button class="sb-item" onclick="showPanel('news')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/></svg>
+    الأخبار والعروض
+  </button>
+  <button class="sb-item" onclick="showPanel('footer')">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="18" x2="21" y2="18"/><path d="M12 2l9 7H3l9-7z"/></svg>
+    الفوتر / السوشيال
+  </button>
+
+  <div class="sb-footer">v1.0 • General Media Tech</div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<div id="main">
+  <div id="topbar">
+    <div>
+      <div class="tb-title" id="topbar-title">نظرة عامة</div>
+      <div class="tb-sub" id="topbar-sub">لوحة إدارة المحتوى الرئيسية</div>
+    </div>
+    <div class="tb-actions">
+      <button class="btn-sm btn-ghost" onclick="location.href='index.html'" target="_blank">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        معاينة الموقع
+      </button>
+      <div id="auth-status" style="display:flex;align-items:center;gap:6px">
+        <span class="badge on">● متصل</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- ══ DASHBOARD PANEL ══ -->
+    <div id="panel-dashboard" class="panel active">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-ico">📋</div><div class="stat-label">بطاقات الخدمات</div><div class="stat-val" id="stat-svc">—</div></div>
+        <div class="stat-card"><div class="stat-ico">🖼</div><div class="stat-label">البانرات</div><div class="stat-val" id="stat-bnr">—</div></div>
+        <div class="stat-card"><div class="stat-ico">📰</div><div class="stat-label">الأخبار</div><div class="stat-val" id="stat-news">—</div></div>
+        <div class="stat-card"><div class="stat-ico">🔗</div><div class="stat-label">الروابط السريعة</div><div class="stat-val" id="stat-ql">—</div></div>
+      </div>
+
+      <div class="data-card">
+        <div class="data-card-header">
+          <div>
+            <div class="data-card-title">حالة الاتصال بـ Supabase</div>
+            <div class="data-card-sub">تأكد من ضبط بيانات المشروع في أعلى الملف</div>
+          </div>
+          <button class="btn-sm btn-ghost" onclick="testConnection()">اختبار الاتصال</button>
+        </div>
+        <div style="padding:16px" id="conn-status">
+          <div style="color:var(--t2);font-size:12px">اضغط "اختبار الاتصال" للتحقق من إعداداتك...</div>
+        </div>
+      </div>
+
+      <div class="data-card">
+        <div class="data-card-header"><div class="data-card-title">دليل الاستخدام السريع</div></div>
+        <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="background:var(--bg3);padding:12px;border-radius:var(--radius2)">
+            <div style="color:var(--red);font-size:11px;font-weight:700;margin-bottom:6px">① ضبط الاتصال</div>
+            <div style="color:var(--t2);font-size:10px;line-height:1.6">افتح ملف <code style="color:var(--red)">admin.html</code> وعدّل السطرين الأولين:<br><code>SUPABASE_URL</code> و <code>SUPABASE_ANON_KEY</code></div>
+          </div>
+          <div style="background:var(--bg3);padding:12px;border-radius:var(--radius2)">
+            <div style="color:var(--green);font-size:11px;font-weight:700;margin-bottom:6px">② رفع البانرات</div>
+            <div style="color:var(--t2);font-size:10px;line-height:1.6">اذهب لقسم "البانرات" → اضغط "إضافة بانر" → ارفع الصورة مباشرة من لوحة التحكم</div>
+          </div>
+          <div style="background:var(--bg3);padding:12px;border-radius:var(--radius2)">
+            <div style="color:var(--blue);font-size:11px;font-weight:700;margin-bottom:6px">③ تعديل المحتوى</div>
+            <div style="color:var(--t2);font-size:10px;line-height:1.6">اختر أي قسم من القائمة الجانبية → عدّل أي عنصر → اضغط "حفظ"</div>
+          </div>
+          <div style="background:var(--bg3);padding:12px;border-radius:var(--radius2)">
+            <div style="color:var(--yellow);font-size:11px;font-weight:700;margin-bottom:6px">④ الترتيب بالسحب</div>
+            <div style="color:var(--t2);font-size:10px;line-height:1.6">في قسمَي "القائمة" و"بطاقات الخدمات" يمكنك سحب العناصر لإعادة ترتيبها</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SETTINGS PANEL ══ -->
+    <div id="panel-settings" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">إعدادات الموقع العامة</div><div class="data-card-sub">تؤثر على النصوص الثابتة في جميع أقسام الموقع</div></div>
+          <button class="btn-sm btn-red" onclick="saveSettings()">💾 حفظ التغييرات</button>
+        </div>
+        <div style="padding:18px" id="settings-form">
+          <div style="text-align:center;padding:20px"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NAV PANEL ══ -->
+    <div id="panel-nav" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">روابط القائمة العلوية</div><div class="data-card-sub">اسحب للترتيب • يُحدَّث فوراً على الموقع</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('nav',null)">＋ إضافة رابط</button>
+        </div>
+        <table><thead><tr><th>⠿</th><th>#</th><th>الاسم</th><th>الرابط</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="nav-tbody"><tr><td colspan="6" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ HERO PANEL ══ -->
+    <div id="panel-agents" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">وكلاؤنا المعتمدون</div><div class="data-card-sub">يظهرون بقسم «وكلاؤنا» في الموقع • القسم يختفي تلقائياً إن لم يوجد وكلاء</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('agents',null)">＋ إضافة وكيل</button>
+        </div>
+        <table><thead><tr><th>#</th><th>الاسم</th><th>المدينة</th><th>الهاتف</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="agents-tbody"><tr><td colspan="6" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div id="panel-hero" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">شرائح السلايدر الرئيسي</div><div class="data-card-sub">تتبدل تلقائياً كل 5 ثوانٍ</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('hero',null)">＋ إضافة شريحة</button>
+        </div>
+        <table><thead><tr><th>#</th><th>العنوان</th><th>الزر الأول</th><th>الزر الثاني</th><th>الخلفية</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="hero-tbody"><tr><td colspan="7" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ SERVICE CARDS PANEL ══ -->
+    <div id="panel-service" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">بطاقات الخدمات (٧ بطاقات)</div><div class="data-card-sub">اسحب لإعادة الترتيب</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('service',null)">＋ إضافة بطاقة</button>
+        </div>
+        <table><thead><tr><th>⠿</th><th>#</th><th>الاسم</th><th>الأيقونة</th><th>الرابط</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="svc-tbody"><tr><td colspan="7" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ BANNERS PANEL ══ -->
+    <div id="panel-banners" class="panel">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="data-card">
+          <div class="data-card-header">
+            <div><div class="data-card-title">البانر العلوي</div><div class="data-card-sub">يظهر بعد بطاقات الخدمات</div></div>
+            <button class="btn-sm btn-red" onclick="openModal('banner',{slot:'top'})">＋ إضافة</button>
+          </div>
+          <table><thead><tr><th>#</th><th>الصورة</th><th>الرابط</th><th>ث</th><th></th></tr></thead>
+          <tbody id="bnr-top-tbody"><tr><td colspan="5" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+        </div>
+        <div class="data-card">
+          <div class="data-card-header">
+            <div><div class="data-card-title">البانر السفلي</div><div class="data-card-sub">يظهر بعد قسم "لماذا تختارنا"</div></div>
+            <button class="btn-sm btn-red" onclick="openModal('banner',{slot:'bottom'})">＋ إضافة</button>
+          </div>
+          <table><thead><tr><th>#</th><th>الصورة</th><th>الرابط</th><th>ث</th><th></th></tr></thead>
+          <tbody id="bnr-bot-tbody"><tr><td colspan="5" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ QUICK LINKS PANEL ══ -->
+    <div id="panel-quicklinks" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">الروابط السريعة</div><div class="data-card-sub">شبكة ٤×٢ — ٨ روابط</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('quicklink',null)">＋ إضافة رابط</button>
+        </div>
+        <table><thead><tr><th>#</th><th>العنوان</th><th>الوصف</th><th>الأيقونة</th><th>الرابط</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="ql-tbody"><tr><td colspan="7" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ WHY US PANEL ══ -->
+    <div id="panel-whyus" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">قسم "لماذا تختارنا"</div><div class="data-card-sub">٥ عناصر</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('whyus',null)">＋ إضافة</button>
+        </div>
+        <table><thead><tr><th>#</th><th>العنوان</th><th>الوصف</th><th>الأيقونة</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="why-tbody"><tr><td colspan="6" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ NEWS PANEL ══ -->
+    <div id="panel-news" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">الأخبار والعروض</div><div class="data-card-sub">تظهر ٣ بطاقات في الصف</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('news',null)">＋ إضافة خبر</button>
+        </div>
+        <table><thead><tr><th>#</th><th>العنوان</th><th>التاغ</th><th>التاريخ</th><th>الصورة</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="news-tbody"><tr><td colspan="7" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ══ FOOTER PANEL ══ -->
+    <div id="panel-footer" class="panel">
+      <div class="data-card">
+        <div class="data-card-header">
+          <div><div class="data-card-title">روابط السوشيال في الفوتر</div></div>
+          <button class="btn-sm btn-red" onclick="openModal('footer',null)">＋ إضافة</button>
+        </div>
+        <table><thead><tr><th>#</th><th>الاسم</th><th>الأيقونة</th><th>الرابط</th><th>الحالة</th><th>الإجراءات</th></tr></thead>
+        <tbody id="footer-tbody"><tr><td colspan="6" style="text-align:center;padding:20px"><div class="spinner"></div></td></tr></tbody></table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ══ MODAL ══ -->
+<div id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">إضافة عنصر</div>
+      <button class="btn-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn-sm btn-ghost" onclick="closeModal()">إلغاء</button>
+      <button class="btn-sm btn-red" id="modal-save-btn" onclick="modalSave()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div id="toast-container"></div>
+
+<!-- SVG ICONS library (reused from main site) -->
+<svg style="display:none">
+  <symbol id="ico-store"    viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></symbol>
+  <symbol id="ico-orders"   viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></symbol>
+  <symbol id="ico-warranty" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-shipping" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+  <symbol id="ico-coupon"   viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="ico-support"  viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></symbol>
+  <symbol id="ico-location" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="ico-faq"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ico-truck"        viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+  <symbol id="ico-shield"       viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="ico-headphones"   viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></symbol>
+  <symbol id="ico-fast-delivery" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+</svg>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════════════════════
+const URL  = window.SUPABASE_URL      || 'https://YOUR_PROJECT.supabase.co';
+const KEY  = window.SUPABASE_ANON_KEY || 'YOUR_ANON_KEY';
+
+// ════════════════════════════════════════════════════════
+//  AUTH STATE — access token من Supabase Auth
+// ════════════════════════════════════════════════════════
+let _accessToken = null;  // يُحفظ بعد تسجيل الدخول
+
+// Headers: يستخدم access_token الحقيقي عند توفره، وإلا anon key
+const hdr = () => ({
+  'apikey': KEY,
+  'Authorization': `Bearer ${_accessToken || KEY}`,
+  'Content-Type': 'application/json',
+  'Prefer': 'return=representation'
+});
+
+// ════════════════════════════════════════════════════════
+//  LOGIN / LOGOUT
+// ════════════════════════════════════════════════════════
+async function signIn(email, password) {
+  const r = await fetch(`${URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { 'apikey': KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error_description || data.msg || 'فشل تسجيل الدخول');
+  _accessToken = data.access_token;
+  // حفظ في sessionStorage لتجنب تكرار الدخول عند Refresh
+  sessionStorage.setItem('sb_token', _accessToken);
+  return data;
+}
+
+async function signOut() {
+  try {
+    await fetch(`${URL}/auth/v1/logout`, {
+      method: 'POST',
+      headers: { 'apikey': KEY, 'Authorization': `Bearer ${_accessToken}` }
+    });
+  } catch(e) {}
+  _accessToken = null;
+  sessionStorage.removeItem('sb_token');
+  showLoginScreen();
+}
+
+// استعادة الجلسة عند تحميل الصفحة
+function restoreSession() {
+  const saved = sessionStorage.getItem('sb_token');
+  if (saved) { _accessToken = saved; return true; }
+  return false;
+}
+
+// ── شاشة تسجيل الدخول ────────────────────────────────────────────────────────
+function showLoginScreen() {
+  document.body.innerHTML = `
+    <div style="
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:#0f0f1a; font-family:'Segoe UI',sans-serif; direction:rtl;
+    ">
+      <div style="
+        background:#1a1a2e; border:1px solid #2a2a4a; border-radius:16px;
+        padding:40px 36px; width:340px; box-shadow:0 20px 60px rgba(0,0,0,.5);
+      ">
+        <div style="text-align:center;margin-bottom:28px">
+          <div style="font-size:28px;font-weight:700;color:#fff">🛡️ لوحة الإدارة</div>
+          <div style="color:#888;font-size:13px;margin-top:6px">General Media Tech</div>
+        </div>
+        <div id="login-error" style="
+          display:none; background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.3);
+          color:#f87171; border-radius:8px; padding:10px 14px; font-size:13px; margin-bottom:16px;
+        "></div>
+        <div style="margin-bottom:14px">
+          <label style="color:#aaa;font-size:12px;display:block;margin-bottom:6px">البريد الإلكتروني</label>
+          <input id="login-email" type="email" placeholder="admin@example.com" style="
+            width:100%; box-sizing:border-box; background:#0f0f1a; border:1px solid #2a2a4a;
+            border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none;
+          ">
+        </div>
+        <div style="margin-bottom:22px">
+          <label style="color:#aaa;font-size:12px;display:block;margin-bottom:6px">كلمة المرور</label>
+          <input id="login-pass" type="password" placeholder="••••••••" style="
+            width:100%; box-sizing:border-box; background:#0f0f1a; border:1px solid #2a2a4a;
+            border-radius:8px; padding:10px 12px; color:#fff; font-size:14px; outline:none;
+          " onkeydown="if(event.key==='Enter') doLogin()">
+        </div>
+        <button onclick="doLogin()" id="login-btn" style="
+          width:100%; background:#cc0000; color:#fff; border:none; border-radius:8px;
+          padding:12px; font-size:15px; font-weight:600; cursor:pointer;
+        ">دخول</button>
+      </div>
+    </div>
+  `;
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  const btn   = document.getElementById('login-btn');
+  if (!email || !pass) { errEl.style.display='block'; errEl.textContent='أدخل البريد وكلمة المرور'; return; }
+  btn.textContent = '...جاري الدخول'; btn.disabled = true;
+  try {
+    await signIn(email, pass);
+    location.reload(); // يعيد تحميل الصفحة مع الجلسة محفوظة
+  } catch(e) {
+    errEl.style.display = 'block';
+    errEl.textContent = e.message;
+    btn.textContent = 'دخول'; btn.disabled = false;
+  }
+}
+
+async function sbGet(table, filter='') {
+  const r = await fetch(`${URL}/rest/v1/${table}?order=sort_order.asc${filter}`, { headers: hdr() });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbInsert(table, data) {
+  const r = await fetch(`${URL}/rest/v1/${table}`, {
+    method:'POST', headers: hdr(), body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbUpdate(table, id, data) {
+  const r = await fetch(`${URL}/rest/v1/${table}?id=eq.${id}`, {
+    method:'PATCH', headers: hdr(), body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbDelete(table, id) {
+  const r = await fetch(`${URL}/rest/v1/${table}?id=eq.${id}`, {
+    method:'DELETE', headers: hdr()
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+async function sbUpsert(table, data) {
+  const r = await fetch(`${URL}/rest/v1/${table}?on_conflict=key`, {
+    method:'POST',
+    headers: {...hdr(), 'Prefer': 'resolution=merge-duplicates,return=representation'},
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+// Upload to Supabase Storage — يستخدم access_token الحقيقي
+async function uploadFile(bucket, file) {
+  const ext  = file.name.split('.').pop();
+  const name = `${Date.now()}.${ext}`;
+  const token = _accessToken || KEY;   // ✅ access_token وليس anon key
+  const r = await fetch(`${URL}/storage/v1/object/${bucket}/${name}`, {
+    method: 'POST',
+    headers: {
+      'apikey':        KEY,
+      'Authorization': `Bearer ${token}`,
+      'Content-Type':  file.type,
+      'x-upsert':      'true'          // يسمح بالكتابة حتى لو الملف موجود
+    },
+    body: file
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return `${URL}/storage/v1/object/public/${bucket}/${name}`;
+}
+
+// ════════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════════
+function toast(msg, type='success') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span>${icons[type]||'•'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ════════════════════════════════════════════════════════
+//  PANEL NAVIGATION
+// ════════════════════════════════════════════════════════
+const PANEL_META = {
+  agents:     ['وكلاؤنا المعتمدون','يظهرون بقسم «وكلاؤنا» بالموقع — القسم يختفي إن لم يوجد وكلاء'],
+  dashboard:  ['نظرة عامة',          'لوحة إدارة المحتوى الرئيسية'],
+  settings:   ['إعدادات الموقع',     'النصوص الثابتة والعناوين'],
+  nav:        ['قائمة التنقل',        'روابط الهيدر'],
+  hero:       ['السلايدر الرئيسي',    'شرائح الصفحة الرئيسية'],
+  service:    ['بطاقات الخدمات',      '٧ بطاقات تحت السلايدر'],
+  banners:    ['البانرات',            'البانر العلوي والسفلي'],
+  quicklinks: ['الروابط السريعة',     'شبكة ٤×٢'],
+  whyus:      ['لماذا تختارنا',       '٥ عناصر'],
+  news:       ['الأخبار والعروض',     '٣ بطاقات في الصف'],
+  footer:     ['الفوتر / السوشيال',  'أيقونات وسائل التواصل'],
+};
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+  event?.currentTarget?.classList.add('active');
+  const [title, sub] = PANEL_META[name] || [name,''];
+  document.getElementById('topbar-title').textContent = title;
+  document.getElementById('topbar-sub').textContent   = sub;
+  // lazy load data
+  const loaders = { settings:loadSettings, nav:loadNav, hero:loadHero,
+    service:loadService, banners:loadBanners, quicklinks:loadQuickLinks,
+    whyus:loadWhyUs, news:loadNews, footer:loadFooter, agents:loadAgents };
+  if (loaders[name]) loaders[name]();
+}
+
+// ════════════════════════════════════════════════════════
+//  ICON HELPERS
+// ════════════════════════════════════════════════════════
+const ICONS = ['store','orders','warranty','shipping','coupon','support','location','faq',
+               'truck','shield','check-circle','headphones','fast-delivery'];
+function iconSvg(name, size=16) {
+  return `<svg width="${size}" height="${size}" stroke="#CC0000" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${name}"/></svg>`;
+}
+function iconGrid(selectedName, inputId) {
+  return `<div class="icon-grid">${ICONS.map(n=>`
+    <div class="icon-opt${n===selectedName?' sel':''}" onclick="selectIcon(this,'${n}','${inputId}')">
+      <svg width="18" height="18" stroke="${n===selectedName?'#CC0000':'#9090a0'}" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${n}"/></svg>
+      <span>${n}</span>
+    </div>`).join('')}</div>`;
+}
+function selectIcon(el, name, inputId) {
+  el.closest('.icon-grid').querySelectorAll('.icon-opt').forEach(o=>{
+    o.classList.remove('sel');
+    o.querySelector('svg').style.stroke='#9090a0';
+  });
+  el.classList.add('sel');
+  el.querySelector('svg').style.stroke='#CC0000';
+  document.getElementById(inputId).value = name;
+}
+
+// ════════════════════════════════════════════════════════
+//  TOGGLE HELPERS
+// ════════════════════════════════════════════════════════
+function toggleHtml(id, checked) {
+  return `<label class="toggle"><input type="checkbox" id="${id}" ${checked?'checked':''}><div class="toggle-slider"></div></label>`;
+}
+
+// ════════════════════════════════════════════════════════
+//  DRAG & DROP
+// ════════════════════════════════════════════════════════
+let dragSrc = null;
+function initDrag(tbody) {
+  tbody.querySelectorAll('tr[draggable]').forEach(tr => {
+    tr.addEventListener('dragstart', e => { dragSrc = tr; tr.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    tr.addEventListener('dragend',   () => { dragSrc=null; tr.classList.remove('dragging'); });
+    tr.addEventListener('dragover',  e => { e.preventDefault(); e.dataTransfer.dropEffect='move'; });
+    tr.addEventListener('drop', async e => {
+      e.preventDefault();
+      if (dragSrc && dragSrc !== tr) {
+        const rows = [...tbody.querySelectorAll('tr')];
+        const si = rows.indexOf(dragSrc), ti = rows.indexOf(tr);
+        if (si < ti) tr.after(dragSrc); else tr.before(dragSrc);
+        await saveDragOrder(tbody);
+      }
+    });
+  });
+}
+async function saveDragOrder(tbody) {
+  const table = tbody.dataset.table;
+  const rows  = [...tbody.querySelectorAll('tr[data-id]')];
+  for (let i=0; i<rows.length; i++) {
+    const id = rows[i].dataset.id;
+    rows[i].querySelector('.order-badge').textContent = i+1;
+    await sbUpdate(table, id, { sort_order: i+1 }).catch(()=>{});
+  }
+  toast('تم حفظ الترتيب');
+}
+
+// ════════════════════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════════════════════
+let settingsData = {};
+const SETTINGS_FIELDS = [
+  { key:'topbar_text_ar',            label:'نص الشريط الأسود العلوي',   hint:'يظهر في أعلى الصفحة' },
+  { key:'topbar_highlight_ar',       label:'الكلمة المميزة (بالأحمر)',   hint:'الكلمة داخل النص الأعلى التي تظهر باللون الأحمر' },
+  { key:'contact_btn_ar',            label:'نص زر "تواصل معنا"' },
+  { key:'contact_url',               label:'رابط زر "تواصل معنا"',       hint:'مثال: /contact أو https://wa.me/...' },
+  { key:'quicklinks_title_ar',       label:'عنوان قسم الروابط السريعة' },
+  { key:'why_section_title_ar',      label:'عنوان قسم "لماذا تختارنا"' },
+  { key:'news_section_title_ar',     label:'عنوان قسم الأخبار' },
+  { key:'newsletter_title_ar',       label:'عنوان النشرة البريدية' },
+  { key:'newsletter_sub_ar',         label:'وصف النشرة البريدية' },
+  { key:'newsletter_btn_ar',         label:'نص زر الاشتراك' },
+  { key:'newsletter_placeholder_ar', label:'placeholder حقل البريد' },
+  { key:'copyright_ar',              label:'نص حقوق النشر (الفوتر)' },
+];
+async function loadSettings() {
+  try {
+    const rows = await sbGet('site_settings','');
+    settingsData = Object.fromEntries(rows.map(r=>[r.key,r.value]));
+    const html = SETTINGS_FIELDS.map(f => `
+      <div class="form-group">
+        <label class="form-label">${f.label}</label>
+        <input class="form-input" id="s_${f.key}" value="${settingsData[f.key]||''}" placeholder="${f.label}">
+        ${f.hint?`<div class="form-hint">${f.hint}</div>`:''}
+      </div>`).join('');
+    document.getElementById('settings-form').innerHTML = html;
+  } catch(e) { toast('خطأ في تحميل الإعدادات: '+e.message,'error'); }
+}
+async function saveSettings() {
+  try {
+    const updates = SETTINGS_FIELDS.map(f => ({
+      key: f.key,
+      value: document.getElementById(`s_${f.key}`)?.value || ''
+    }));
+    await sbUpsert('site_settings', updates);
+    toast('تم حفظ الإعدادات بنجاح ✅');
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  NAV ITEMS
+// ════════════════════════════════════════════════════════
+let navData = [];
+async function loadAgents() {
+  try {
+    const rows = await sbGet('agents','');
+    const tbody = document.getElementById('agents-tbody');
+    tbody.dataset.table = 'agents';
+    tbody.innerHTML = rows.length ? rows.map(a => `
+      <tr data-id="${a.id}">
+        <td><span class="order-badge">${a.sort_order ?? 0}</span></td>
+        <td class="td-main">${a.name || '—'}</td>
+        <td>${a.city || '—'}</td>
+        <td class="td-url" dir="ltr">${a.phone || '—'}</td>
+        <td>${a.is_active !== false ? '<span class="badge on">ظاهر</span>' : '<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('agents',${JSON.stringify(a).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('agents','${a.id}',loadAgents)">حذف</button>
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t2);font-size:13px;">لا وكلاء بعد — أضف أول وكيل ليظهر قسم «وكلاؤنا» بالموقع.<br><span style="font-size:11px;opacity:.7;">(إن ظهر خطأ: شغّل GMT_SITE_AGENTS.txt على قاعدة الموقع أولاً)</span></td></tr>';
+  } catch(e) { 
+    const tb = document.getElementById('agents-tbody');
+    if (tb) tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:#f87171;font-size:12px;">تعذّر التحميل: ${e.message}<br>هل شغّلت GMT_SITE_AGENTS.txt على قاعدة الموقع؟</td></tr>`;
+  }
+}
+
+async function loadNav() {
+  try {
+    navData = await sbGet('nav_items','');
+    const tbody = document.getElementById('nav-tbody');
+    tbody.dataset.table = 'nav_items';
+    tbody.innerHTML = navData.map(n => `
+      <tr draggable="true" data-id="${n.id}">
+        <td><span class="drag-handle">⠿</span></td>
+        <td><span class="order-badge">${n.sort_order}</span></td>
+        <td class="td-main">${n.label_ar}${n.is_home?` <span class="badge on">الرئيسية</span>`:''}</td>
+        <td class="td-url">${n.url||'—'}</td>
+        <td>${n.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('nav',${JSON.stringify(n).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('nav_items','${n.id}',loadNav)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+    initDrag(tbody);
+  } catch(e) { toast('خطأ في تحميل القائمة: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  HERO SLIDES
+// ════════════════════════════════════════════════════════
+let heroData = [];
+async function loadHero() {
+  try {
+    heroData = await sbGet('hero_slides','');
+    const tbody = document.getElementById('hero-tbody');
+    tbody.innerHTML = heroData.map(h => `
+      <tr data-id="${h.id}">
+        <td><span class="order-badge">${h.sort_order}</span></td>
+        <td>
+          <div class="td-main">${h.subtitle_ar||'—'}</div>
+          <div style="font-size:10px;color:var(--t3)">${h.title_ar||''}</div>
+        </td>
+        <td style="font-size:11px">${h.btn1_label_ar||'—'}</td>
+        <td style="font-size:11px">${h.btn2_label_ar||'—'}</td>
+        <td><div style="width:20px;height:20px;border-radius:4px;background:${h.bg_color==='light'?'#f5f5f5':h.bg_color||'#fff'};border:1px solid var(--border2)"></div></td>
+        <td>${h.is_active?'<span class="badge on">نشط</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('hero',${JSON.stringify(h).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('hero_slides','${h.id}',loadHero)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) { toast('خطأ في تحميل السلايدر: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  SERVICE CARDS
+// ════════════════════════════════════════════════════════
+let svcData = [];
+async function loadService() {
+  try {
+    svcData = await sbGet('service_cards','');
+    const tbody = document.getElementById('svc-tbody');
+    tbody.dataset.table = 'service_cards';
+    tbody.innerHTML = svcData.map(c => `
+      <tr draggable="true" data-id="${c.id}">
+        <td><span class="drag-handle">⠿</span></td>
+        <td><span class="order-badge">${c.sort_order}</span></td>
+        <td class="td-main">${c.label_ar}</td>
+        <td>${iconSvg(c.icon_name)} <span style="font-size:10px;color:var(--t3)">${c.icon_name}</span></td>
+        <td class="td-url">${c.url||'—'}</td>
+        <td>${c.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('service',${JSON.stringify(c).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('service_cards','${c.id}',loadService)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+    initDrag(tbody);
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  BANNERS
+// ════════════════════════════════════════════════════════
+async function loadBanners() {
+  for (const slot of ['top','bottom']) {
+    try {
+      const data = await sbGet('banners', `&slot=eq.${slot}`);
+      const tbody = document.getElementById(`bnr-${slot}-tbody`);
+      tbody.innerHTML = data.length ? data.map(b => `
+        <tr data-id="${b.id}">
+          <td><span class="order-badge">${b.sort_order}</span></td>
+          <td>${b.image_url?`<img src="${b.image_url}" style="height:36px;border-radius:4px;max-width:80px;object-fit:cover">`:
+            '<span style="color:var(--t3);font-size:10px">لا توجد صورة</span>'}</td>
+          <td class="td-url" style="font-size:10px">${b.link_url||'—'}</td>
+          <td style="color:var(--t2)">${b.display_secs}s</td>
+          <td><div class="td-actions">
+            <button class="btn-sm btn-ghost" onclick="openModal('banner',${JSON.stringify(b).replace(/"/g,'&quot;')})">تعديل</button>
+            <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('banners','${b.id}',loadBanners)">حذف</button>
+          </div></td>
+        </tr>`).join('') :
+        `<tr><td colspan="5"><div class="empty-state"><div class="empty-ico">🖼</div><p>لا توجد بانرات — أضف بانراً جديداً</p></div></td></tr>`;
+    } catch(e) { console.error(e); }
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  QUICK LINKS
+// ════════════════════════════════════════════════════════
+async function loadQuickLinks() {
+  try {
+    const data = await sbGet('quick_links','');
+    const tbody = document.getElementById('ql-tbody');
+    tbody.innerHTML = data.map(l => `
+      <tr data-id="${l.id}">
+        <td><span class="order-badge">${l.sort_order}</span></td>
+        <td class="td-main">${l.title_ar}</td>
+        <td style="color:var(--t3);font-size:11px">${l.description_ar||'—'}</td>
+        <td>${iconSvg(l.icon_name)} <span style="font-size:10px;color:var(--t3)">${l.icon_name}</span></td>
+        <td class="td-url">${l.url||'—'}</td>
+        <td>${l.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('quicklink',${JSON.stringify(l).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('quick_links','${l.id}',loadQuickLinks)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  WHY US
+// ════════════════════════════════════════════════════════
+async function loadWhyUs() {
+  try {
+    const data = await sbGet('why_us_features','');
+    const tbody = document.getElementById('why-tbody');
+    tbody.innerHTML = data.map(w => `
+      <tr data-id="${w.id}">
+        <td><span class="order-badge">${w.sort_order}</span></td>
+        <td class="td-main">${w.title_ar}</td>
+        <td style="color:var(--t3);font-size:11px">${w.description_ar||'—'}</td>
+        <td>${iconSvg(w.icon_name)} <span style="font-size:10px;color:var(--t3)">${w.icon_name}</span></td>
+        <td>${w.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('whyus',${JSON.stringify(w).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('why_us_features','${w.id}',loadWhyUs)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  NEWS
+// ════════════════════════════════════════════════════════
+async function loadNews() {
+  try {
+    const data = await sbGet('news_cards','');
+    const tbody = document.getElementById('news-tbody');
+    tbody.innerHTML = data.map(n => `
+      <tr data-id="${n.id}">
+        <td><span class="order-badge">${n.sort_order}</span></td>
+        <td class="td-main">${n.title_ar}</td>
+        <td><span class="badge" style="background:${n.tag_color||'#CC0000'}22;color:${n.tag_color||'#CC0000'}">${n.tag_ar||'—'}</span></td>
+        <td style="font-size:11px;color:var(--t3)">${n.published_at||'—'}</td>
+        <td>${n.image_url?`<img src="${n.image_url}" style="height:30px;border-radius:4px;max-width:60px;object-fit:cover">`:
+          '<span style="color:var(--t3);font-size:10px">لا توجد صورة</span>'}</td>
+        <td>${n.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('news',${JSON.stringify(n).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('news_cards','${n.id}',loadNews)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  FOOTER
+// ════════════════════════════════════════════════════════
+async function loadFooter() {
+  try {
+    const data = await sbGet('footer_links','');
+    const tbody = document.getElementById('footer-tbody');
+    tbody.innerHTML = data.map(f => `
+      <tr data-id="${f.id}">
+        <td><span class="order-badge">${f.sort_order}</span></td>
+        <td class="td-main">${f.label_ar}</td>
+        <td>${iconSvg(f.icon_name||'store')} <span style="font-size:10px;color:var(--t3)">${f.icon_name||'—'}</span></td>
+        <td class="td-url">${f.url||'—'}</td>
+        <td>${f.is_active?'<span class="badge on">ظاهر</span>':'<span class="badge off">مخفي</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn-sm btn-ghost" onclick="openModal('footer',${JSON.stringify(f).replace(/"/g,'&quot;')})">تعديل</button>
+          <button class="btn-sm" style="background:rgba(239,68,68,.12);color:#f87171" onclick="deleteRow('footer_links','${f.id}',loadFooter)">حذف</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) { toast('خطأ: '+e.message,'error'); }
+}
+
+// ════════════════════════════════════════════════════════
+//  MODAL SYSTEM
+// ════════════════════════════════════════════════════════
+let modalState = { type:'', data:null, onSave:null };
+
+const MODAL_CONFIGS = {
+  agents: {
+    title: data => data ? 'تعديل وكيل' : 'إضافة وكيل معتمد',
+    table: 'agents',
+    reload: loadAgents,
+    body: data => `
+      <div class="form-group"><label class="form-label">اسم الوكيل / المحل *</label>
+        <input class="form-input" id="f_name" value="${data?.name||''}" placeholder="مثال: محل النور للتصوير"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">المدينة</label>
+          <input class="form-input" id="f_city" value="${data?.city||''}" placeholder="مثال: حلب"></div>
+        <div class="form-group"><label class="form-label">الهاتف</label>
+          <input class="form-input" id="f_phone" value="${data?.phone||''}" placeholder="09XXXXXXXX" dir="ltr"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order??1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر بالموقع</span></div></div>
+      </div>`,
+    getData: () => ({
+      name: document.getElementById('f_name').value,
+      city: document.getElementById('f_city').value || null,
+      phone: document.getElementById('f_phone').value || null,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    })
+  },
+
+  nav: {
+    title: data => data ? 'تعديل رابط القائمة' : 'إضافة رابط جديد',
+    table: 'nav_items',
+    reload: loadNav,
+    body: data => `
+      <div class="form-group"><label class="form-label">اسم الرابط *</label>
+        <input class="form-input" id="f_label_ar" value="${data?.label_ar||''}" placeholder="مثال: عن الشركة"></div>
+      <div class="form-group"><label class="form-label">الرابط (URL) *</label>
+        <input class="form-input" id="f_url" value="${data?.url||''}" placeholder="مثال: /about" dir="ltr"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر في القائمة</span></div></div>
+      </div>`,
+    getData: () => ({
+      label_ar: document.getElementById('f_label_ar').value,
+      url: document.getElementById('f_url').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    })
+  },
+
+  hero: {
+    title: data => data ? 'تعديل الشريحة' : 'إضافة شريحة جديدة',
+    table: 'hero_slides',
+    reload: loadHero,
+    body: data => `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">العنوان الصغير</label>
+          <input class="form-input" id="f_title_ar" value="${data?.title_ar||''}" placeholder="مثال: التصوير الاحترافي"></div>
+        <div class="form-group"><label class="form-label">العنوان الرئيسي (الأحمر) *</label>
+          <input class="form-input" id="f_subtitle_ar" value="${data?.subtitle_ar||''}" placeholder="مثال: هذا هو عالم Canon"></div>
+      </div>
+      <div class="form-group"><label class="form-label">النص التفصيلي</label>
+        <textarea class="form-textarea" id="f_description_ar" placeholder="سطرين كحد أقصى...">${data?.description_ar||''}</textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">نص الزر الأول (أحمر)</label>
+          <input class="form-input" id="f_btn1_label_ar" value="${data?.btn1_label_ar||''}" placeholder="اكتشف المزيد"></div>
+        <div class="form-group"><label class="form-label">رابط الزر الأول</label>
+          <input class="form-input" id="f_btn1_url" value="${data?.btn1_url||''}" placeholder="/products" dir="ltr"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">نص الزر الثاني (أبيض)</label>
+          <input class="form-input" id="f_btn2_label_ar" value="${data?.btn2_label_ar||''}" placeholder="تصفح المنتجات"></div>
+        <div class="form-group"><label class="form-label">رابط الزر الثاني</label>
+          <input class="form-input" id="f_btn2_url" value="${data?.btn2_url||''}" placeholder="/catalog" dir="ltr"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">لون الخلفية</label>
+          <select class="form-select" id="f_bg_color">
+            <option value="light" ${(data?.bg_color||'light')==='light'?'selected':''}>فاتح (أبيض/أحمر)</option>
+            <option value="#111" ${data?.bg_color==='#111'?'selected':''}>داكن (أسود)</option>
+            <option value="#0a0a1e" ${data?.bg_color==='#0a0a1e'?'selected':''}>داكن جداً (أزرق-أسود)</option>
+          </select></div>
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">صورة الخلفية</label>
+        <div class="upload-area" onclick="document.getElementById('hero-file').click()">
+          <div style="font-size:22px;margin-bottom:6px">🖼</div>
+          <div style="font-size:11px;color:var(--t2)">اضغط لرفع صورة خلفية الشريحة</div>
+          ${data?.image_url?`<img src="${data.image_url}" class="upload-preview" id="hero-img-preview">`:'<div id="hero-img-preview"></div>'}
+        </div>
+        <input type="file" id="hero-file" accept="image/*" style="display:none" onchange="previewFile(this,'hero-img-preview')">
+        <input type="hidden" id="f_image_url" value="${data?.image_url||''}">
+        <div class="form-hint">يُرفع إلى bucket: hero-slides</div>
+      </div>
+      <div class="form-group"><label class="form-label">الحالة</label>
+        <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">شريحة نشطة</span></div></div>`,
+    getData: () => ({
+      title_ar: document.getElementById('f_title_ar').value,
+      subtitle_ar: document.getElementById('f_subtitle_ar').value,
+      description_ar: document.getElementById('f_description_ar').value,
+      btn1_label_ar: document.getElementById('f_btn1_label_ar').value,
+      btn1_url: document.getElementById('f_btn1_url').value,
+      btn2_label_ar: document.getElementById('f_btn2_label_ar').value,
+      btn2_url: document.getElementById('f_btn2_url').value,
+      bg_color: document.getElementById('f_bg_color').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      image_url: document.getElementById('f_image_url').value,
+      is_active: document.getElementById('f_is_active').checked,
+    }),
+    fileFields: [{ fileId:'hero-file', urlId:'f_image_url', bucket:'hero-slides' }]
+  },
+
+  service: {
+    title: data => data ? 'تعديل بطاقة الخدمة' : 'إضافة بطاقة جديدة',
+    table: 'service_cards',
+    reload: loadService,
+    body: data => `
+      <div class="form-group"><label class="form-label">اسم البطاقة *</label>
+        <input class="form-input" id="f_label_ar" value="${data?.label_ar||''}" placeholder="مثال: المتجر الإلكتروني"></div>
+      <div class="form-group"><label class="form-label">الرابط</label>
+        <input class="form-input" id="f_url" value="${data?.url||''}" placeholder="مثال: /shop" dir="ltr"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر</span></div></div>
+      </div>
+      <div class="form-group"><label class="form-label">الأيقونة *</label>
+        <input type="hidden" id="f_icon_name" value="${data?.icon_name||'store'}">
+        ${iconGrid(data?.icon_name||'store','f_icon_name')}
+      </div>`,
+    getData: () => ({
+      label_ar: document.getElementById('f_label_ar').value,
+      url: document.getElementById('f_url').value,
+      icon_name: document.getElementById('f_icon_name').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    })
+  },
+
+  banner: {
+    title: data => (data?.id) ? 'تعديل البانر' : 'إضافة بانر جديد',
+    table: 'banners',
+    reload: loadBanners,
+    body: data => `
+      <div class="form-group"><label class="form-label">الموضع</label>
+        <select class="form-select" id="f_slot">
+          <option value="top"    ${(data?.slot||'top')==='top'?'selected':''}>البانر العلوي</option>
+          <option value="bottom" ${data?.slot==='bottom'?'selected':''}>البانر السفلي</option>
+        </select></div>
+      <div class="form-group"><label class="form-label">صورة البانر *</label>
+        <div class="upload-area" onclick="document.getElementById('bnr-file').click()">
+          <div style="font-size:22px;margin-bottom:6px">📸</div>
+          <div style="font-size:11px;color:var(--t2)">اضغط لرفع صورة البانر</div>
+          ${data?.image_url?`<img src="${data.image_url}" class="upload-preview" id="bnr-img-preview">`:'<div id="bnr-img-preview"></div>'}
+        </div>
+        <input type="file" id="bnr-file" accept="image/*" style="display:none" onchange="previewFile(this,'bnr-img-preview')">
+        <input type="hidden" id="f_image_url" value="${data?.image_url||''}">
+        <div class="form-hint">يُرفع إلى bucket: banners | الأبعاد المثلى: 1280×320px</div>
+      </div>
+      <div class="form-group"><label class="form-label">الرابط (اختياري)</label>
+        <input class="form-input" id="f_link_url" value="${data?.link_url||''}" placeholder="https://..." dir="ltr"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">مدة العرض (بالثواني)</label>
+          <input class="form-input" id="f_display_secs" type="number" value="${data?.display_secs||3}" min="1" max="30"></div>
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">الحالة</label>
+        <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">بانر نشط</span></div></div>`,
+    getData: () => ({
+      slot: document.getElementById('f_slot').value,
+      image_url: document.getElementById('f_image_url').value,
+      link_url: document.getElementById('f_link_url').value,
+      display_secs: +document.getElementById('f_display_secs').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    }),
+    fileFields: [{ fileId:'bnr-file', urlId:'f_image_url', bucket:'banners' }]
+  },
+
+  quicklink: {
+    title: data => data ? 'تعديل الرابط السريع' : 'إضافة رابط سريع',
+    table: 'quick_links',
+    reload: loadQuickLinks,
+    body: data => `
+      <div class="form-group"><label class="form-label">العنوان *</label>
+        <input class="form-input" id="f_title_ar" value="${data?.title_ar||''}" placeholder="مثال: تصفح كفالتك"></div>
+      <div class="form-group"><label class="form-label">الوصف</label>
+        <input class="form-input" id="f_description_ar" value="${data?.description_ar||''}" placeholder="مثال: تحقق من حالة ضمان منتجك"></div>
+      <div class="form-group"><label class="form-label">الرابط</label>
+        <input class="form-input" id="f_url" value="${data?.url||''}" placeholder="/warranty" dir="ltr"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر</span></div></div>
+      </div>
+      <div class="form-group"><label class="form-label">الأيقونة</label>
+        <input type="hidden" id="f_icon_name" value="${data?.icon_name||'store'}">
+        ${iconGrid(data?.icon_name||'store','f_icon_name')}</div>`,
+    getData: () => ({
+      title_ar: document.getElementById('f_title_ar').value,
+      description_ar: document.getElementById('f_description_ar').value,
+      url: document.getElementById('f_url').value,
+      icon_name: document.getElementById('f_icon_name').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    })
+  },
+
+  whyus: {
+    title: data => data ? 'تعديل الميزة' : 'إضافة ميزة جديدة',
+    table: 'why_us_features',
+    reload: loadWhyUs,
+    body: data => `
+      <div class="form-group"><label class="form-label">العنوان *</label>
+        <input class="form-input" id="f_title_ar" value="${data?.title_ar||''}" placeholder="مثال: وكيل رسمي Canon"></div>
+      <div class="form-group"><label class="form-label">الوصف</label>
+        <input class="form-input" id="f_description_ar" value="${data?.description_ar||''}" placeholder="معتمد وموثوق من Canon"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر</span></div></div>
+      </div>
+      <div class="form-group"><label class="form-label">الأيقونة</label>
+        <input type="hidden" id="f_icon_name" value="${data?.icon_name||'check-circle'}">
+        ${iconGrid(data?.icon_name||'check-circle','f_icon_name')}</div>`,
+    getData: () => ({
+      title_ar: document.getElementById('f_title_ar').value,
+      description_ar: document.getElementById('f_description_ar').value,
+      icon_name: document.getElementById('f_icon_name').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    })
+  },
+
+  news: {
+    title: data => data ? 'تعديل الخبر' : 'إضافة خبر جديد',
+    table: 'news_cards',
+    reload: loadNews,
+    body: data => `
+      <div class="form-group"><label class="form-label">عنوان الخبر *</label>
+        <input class="form-input" id="f_title_ar" value="${data?.title_ar||''}" placeholder="عنوان الخبر أو العرض"></div>
+      <div class="form-group"><label class="form-label">الوصف القصير</label>
+        <input class="form-input" id="f_description_ar" value="${data?.description_ar||''}" placeholder="وصف مختصر"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">نص التاغ</label>
+          <input class="form-input" id="f_tag_ar" value="${data?.tag_ar||''}" placeholder="مثال: عرض خاص"></div>
+        <div class="form-group"><label class="form-label">لون التاغ</label>
+          <select class="form-select" id="f_tag_color">
+            <option value="#CC0000" ${(data?.tag_color||'#CC0000')==='#CC0000'?'selected':''}>🔴 عرض خاص</option>
+            <option value="#0066CC" ${data?.tag_color==='#0066CC'?'selected':''}>🔵 خبر</option>
+            <option value="#006600" ${data?.tag_color==='#006600'?'selected':''}>🟢 معرض/فعالية</option>
+            <option value="#f59e0b" ${data?.tag_color==='#f59e0b'?'selected':''}>🟡 إعلان</option>
+          </select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">رابط الخبر</label>
+          <input class="form-input" id="f_link_url" value="${data?.link_url||''}" placeholder="/news/1" dir="ltr"></div>
+        <div class="form-group"><label class="form-label">تاريخ النشر</label>
+          <input class="form-input" id="f_published_at" type="date" value="${data?.published_at||''}"></div>
+      </div>
+      <div class="form-group"><label class="form-label">صورة الخبر</label>
+        <div class="upload-area" onclick="document.getElementById('news-file').click()">
+          <div style="font-size:20px;margin-bottom:5px">📰</div>
+          <div style="font-size:11px;color:var(--t2)">اضغط لرفع صورة الخبر</div>
+          ${data?.image_url?`<img src="${data.image_url}" class="upload-preview" id="news-img-preview">`:'<div id="news-img-preview"></div>'}
+        </div>
+        <input type="file" id="news-file" accept="image/*" style="display:none" onchange="previewFile(this,'news-img-preview')">
+        <input type="hidden" id="f_image_url" value="${data?.image_url||''}">
+        <div class="form-hint">يُرفع إلى bucket: news-images</div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر</span></div></div>
+      </div>`,
+    getData: () => ({
+      title_ar: document.getElementById('f_title_ar').value,
+      description_ar: document.getElementById('f_description_ar').value,
+      tag_ar: document.getElementById('f_tag_ar').value,
+      tag_color: document.getElementById('f_tag_color').value,
+      link_url: document.getElementById('f_link_url').value,
+      published_at: document.getElementById('f_published_at').value || null,
+      image_url: document.getElementById('f_image_url').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+    }),
+    fileFields: [{ fileId:'news-file', urlId:'f_image_url', bucket:'news-images' }]
+  },
+
+  footer: {
+    title: data => data ? 'تعديل رابط السوشيال' : 'إضافة رابط سوشيال',
+    table: 'footer_links',
+    reload: loadFooter,
+    body: data => `
+      <div class="form-group"><label class="form-label">الاسم *</label>
+        <input class="form-input" id="f_label_ar" value="${data?.label_ar||''}" placeholder="مثال: Instagram"></div>
+      <div class="form-group"><label class="form-label">الرابط *</label>
+        <input class="form-input" id="f_url" value="${data?.url||''}" placeholder="https://instagram.com/..." dir="ltr"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الترتيب</label>
+          <input class="form-input" id="f_sort_order" type="number" value="${data?.sort_order||1}"></div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <div class="toggle-wrap">${toggleHtml('f_is_active',data?.is_active!==false)}<span style="color:var(--t2);font-size:12px">ظاهر</span></div></div>
+      </div>
+      <div class="form-group"><label class="form-label">الأيقونة</label>
+        <input type="hidden" id="f_icon_name" value="${data?.icon_name||'store'}">
+        ${iconGrid(data?.icon_name||'store','f_icon_name')}</div>`,
+    getData: () => ({
+      label_ar: document.getElementById('f_label_ar').value,
+      url: document.getElementById('f_url').value,
+      icon_name: document.getElementById('f_icon_name').value,
+      sort_order: +document.getElementById('f_sort_order').value,
+      is_active: document.getElementById('f_is_active').checked,
+      link_type: 'social',
+    })
+  },
+};
+
+// open/close modal
+function openModal(type, data) {
+  const cfg = MODAL_CONFIGS[type];
+  if (!cfg) return;
+  modalState = { type, data, cfg };
+  document.getElementById('modal-title').textContent = cfg.title(data);
+  document.getElementById('modal-body').innerHTML = cfg.body(data);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeModalOutside(e) { if (e.target.id==='modal-overlay') closeModal(); }
+
+// save modal
+async function modalSave() {
+  const { type, data, cfg } = modalState;
+  if (!cfg) return;
+  const btn = document.getElementById('modal-save-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    // upload files first
+    for (const ff of (cfg.fileFields||[])) {
+      const fileInput = document.getElementById(ff.fileId);
+      if (fileInput?.files[0]) {
+        toast('جاري رفع الصورة...', 'info');
+        const uploadedUrl = await uploadFile(ff.bucket, fileInput.files[0]);
+        document.getElementById(ff.urlId).value = uploadedUrl;
+      }
+    }
+    const payload = cfg.getData();
+    if (data?.id) {
+      await sbUpdate(cfg.table, data.id, payload);
+      toast('تم تحديث العنصر بنجاح ✅');
+    } else {
+      await sbInsert(cfg.table, payload);
+      toast('تم إضافة العنصر بنجاح ✅');
+    }
+    closeModal();
+    cfg.reload();
+  } catch(e) {
+    toast('خطأ: '+e.message, 'error');
+  } finally {
+    btn.disabled = false; btn.innerHTML = '💾 حفظ';
+  }
+}
+
+// delete
+async function deleteRow(table, id, reload) {
+  if (!confirm('هل أنت متأكد من الحذف؟ لا يمكن التراجع.')) return;
+  try {
+    await sbDelete(table, id);
+    toast('تم الحذف');
+    reload();
+  } catch(e) { toast('خطأ في الحذف: '+e.message,'error'); }
+}
+
+// preview file
+function previewFile(input, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    let el = document.getElementById(previewId);
+    if (!el || el.tagName !== 'IMG') {
+      el = document.createElement('img');
+      el.id = previewId; el.className = 'upload-preview';
+      input.closest('.form-group').querySelector('.upload-area').appendChild(el);
+    }
+    el.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ════════════════════════════════════════════════════════
+//  CONNECTION TEST
+// ════════════════════════════════════════════════════════
+async function testConnection() {
+  const el = document.getElementById('conn-status');
+  el.innerHTML = '<div style="display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px"><div class="spinner"></div> جاري الاختبار...</div>';
+  try {
+    const r = await fetch(`${URL}/rest/v1/site_settings?limit=1`, { headers: hdr() });
+    if (r.ok) {
+      el.innerHTML = `<div style="color:var(--green);font-size:12px">✅ الاتصال ناجح! المشروع: <code style="color:var(--red)">${URL}</code></div>`;
+      toast('الاتصال بـ Supabase يعمل بشكل صحيح ✅');
+      loadDashboardStats();
+    } else {
+      throw new Error(`HTTP ${r.status}`);
+    }
+  } catch(e) {
+    el.innerHTML = `<div style="color:#f87171;font-size:12px">❌ فشل الاتصال: ${e.message}<br><span style="color:var(--t3);font-size:10px">تأكد من صحة SUPABASE_URL و SUPABASE_ANON_KEY في أعلى الملف</span></div>`;
+    toast('فشل الاتصال بـ Supabase', 'error');
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  DASHBOARD STATS
+// ════════════════════════════════════════════════════════
+async function loadDashboardStats() {
+  const tables = [
+    ['service_cards','stat-svc'],
+    ['banners','stat-bnr'],
+    ['news_cards','stat-news'],
+    ['quick_links','stat-ql'],
+  ];
+  for (const [table, elId] of tables) {
+    try {
+      const r = await fetch(`${URL}/rest/v1/${table}?select=count`, {
+        headers: { ...hdr(), 'Prefer': 'count=exact' }
+      });
+      const count = r.headers.get('content-range')?.split('/')[1] || '?';
+      document.getElementById(elId).textContent = count;
+    } catch { document.getElementById(elId).textContent = '—'; }
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  if (!restoreSession()) {
+    showLoginScreen();
+    return;
+  }
+  initAdmin();
+});
+
+function initAdmin() {
+  loadDashboardStats();
+  const authDiv = document.getElementById('auth-status');
+  if (authDiv) {
+    authDiv.innerHTML = `
+      <span class='badge on'>● متصل</span>
+      <button class='btn-sm btn-ghost' onclick='signOut()' style='margin-right:4px'>خروج 🚪</button>
+    `;
+  }
+}
+</script>
+
+    <script src="gmt-guide.js"></script><!-- 🎓 النظام التعليمي (يستبدل gmt-tour) -->
+
+<script src="gmt-selftest.js"></script>
+</body>
+</html>

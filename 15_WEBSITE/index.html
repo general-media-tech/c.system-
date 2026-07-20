@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>General Media Tech – وكيل كانون الرسمي في سوريا</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+  window.SUPABASE_URL      = 'https://znpakcaizvkwqzhosxvm.supabase.co';
+  window.SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpucGFrY2FpenZrd3F6aG9zeHZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMzM0NTMsImV4cCI6MjA5NTkwOTQ1M30.YW3YuT-RRTpKw5WeFHkPeTUcXBBtaQFGCaCrBQWykks';
+</script>
+<style>
+/* ══ RESET ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#CC0000; --red2:#aa0000; --black:#111;
+  --gray-bg:#f7f7f7; --gray-bd:#e8e8e8;
+  --t1:#222; --t2:#666;
+  --font:'Noto Kufi Arabic',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:var(--font);
+  background:#fff;
+  color:var(--t1);
+  direction:rtl;
+  overflow-x:hidden;
+  width:100%;
+  font-size:13px;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+
+/* ══ TOP BAR ══ */
+.topbar{
+  background:var(--black);color:#fff;
+  font-size:7.5px;text-align:center;
+  padding:3px 7px;
+  position:relative;z-index:200;
+  line-height:1.4;
+}
+.topbar .red{color:var(--red);font-weight:700}
+.tb-right{
+  position:absolute;left:8px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:6px;
+}
+.tb-lang{
+  border:1px solid #555;color:#ccc;background:transparent;
+  font-size:6px;padding:1px 4px;border-radius:2px;
+  font-family:var(--font);cursor:pointer;
+}
+.tb-notif{position:relative;cursor:pointer;font-size:12px;color:#ccc;display:flex;align-items:center}
+.tb-badge{
+  position:absolute;top:-2px;right:-3px;
+  background:var(--red);color:#fff;
+  font-size:4px;width:8px;height:8px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-weight:700;
+}
+.btn-contact{
+  background:var(--red);color:#fff;border:none;
+  border-radius:3px;padding:2px 6px;font-size:6.5px;
+  font-family:var(--font);font-weight:700;white-space:nowrap;
+}
+
+/* ══ HEADER ══ */
+#header{
+  background:#fff;border-bottom:1px solid var(--gray-bd);
+  position:sticky;top:0;z-index:100;
+  transition:box-shadow .3s;
+}
+#header.stuck{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.hdr-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 11px;
+  max-width:100%;
+}
+.logo{display:flex;align-items:center;gap:5px;text-decoration:none}
+.logo-circle{
+  width:31px;height:31px;border-radius:50%;background:var(--black);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.logo-circle svg{width:16px;height:16px}
+.logo-texts{line-height:1.1}
+.lc-canon{color:var(--red);font-size:7.5px;font-weight:900;font-style:italic}
+.lc-gen  {font-size:7px;font-weight:900;letter-spacing:1.5px;color:var(--black)}
+.lc-media{font-size:4.5px;color:#555;letter-spacing:.5px;font-weight:600;margin-top:1px}
+.lc-sub  {font-size:3.5px;color:#999;letter-spacing:.1px}
+/* Desktop nav */
+.hdr-nav{display:flex;gap:11px;align-items:center}
+.hdr-nav a{
+  color:#444;font-size:7.5px;font-weight:500;
+  padding-bottom:2px;border-bottom:2px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.hdr-nav a.act{color:var(--red);border-color:var(--red);font-weight:700}
+.hdr-nav a:hover{color:var(--red)}
+.hdr-icons{display:flex;align-items:center;gap:7px}
+.hdr-ico{font-size:11px;cursor:pointer;color:#555}
+/* hide nav on narrow mobile */
+@media(max-width:480px){.hdr-nav{display:none}}
+
+/* ══ HERO ══ */
+#hero{position:relative;overflow:hidden}
+.hero-slide{display:none;position:relative;align-items:center;min-height:177px}
+.hero-slide.on{display:flex}
+.hs-light{background:linear-gradient(128deg,#fff 0%,#f5f5f5 25%,#ffe0e0 55%,#ffcaca 100%)}
+/* deco */
+.h-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.h-deco::before{
+  content:'';position:absolute;top:-40px;left:-30px;
+  width:240px;height:240px;
+  background:radial-gradient(ellipse,rgba(204,0,0,.14) 0%,transparent 65%);border-radius:50%;
+}
+.h-deco::after{
+  content:'';position:absolute;top:0;right:0;width:50%;height:100%;
+  background:linear-gradient(128deg,rgba(204,0,0,.05) 0%,rgba(180,0,0,.12) 50%,rgba(140,0,0,.16) 100%);
+  clip-path:polygon(22% 0%,100% 0%,100% 100%,0% 100%);
+}
+.hp{position:absolute;border-radius:50%;pointer-events:none;background:rgba(204,0,0,.06);animation:pflt 5s ease-in-out infinite}
+.hp1{width:140px;height:140px;top:-30px;left:-20px;animation-delay:0s}
+.hp2{width:80px;height:80px;top:30px;left:120px;animation-delay:-1.8s;background:rgba(204,0,0,.04)}
+.hp3{width:55px;height:55px;bottom:15px;left:50px;animation-delay:-3.2s}
+@keyframes pflt{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* hero content */
+.hero-body{
+  width:100%;display:flex;align-items:center;
+  padding:14px 12px 22px;
+  gap:10px;position:relative;z-index:2;
+}
+.hero-txt{flex:1;text-align:right}
+.h-small{font-size:7px;color:#999;margin-bottom:2px}
+.h-t1   {font-size:9.5px;font-weight:700;color:#333;margin-bottom:2px;line-height:1.25}
+.h-t2   {font-size:13.5px;font-weight:900;color:var(--red);font-style:italic;margin-bottom:7px;line-height:1.1}
+.h-desc {font-size:7px;color:var(--t2);line-height:1.85;margin-bottom:9px;white-space:pre-line}
+.hero-btns{display:flex;gap:5px;flex-wrap:wrap}
+.btn-r{
+  background:var(--red);color:#fff;border:none;
+  border-radius:4px;padding:0 9px;height:23px;
+  font-size:7.5px;font-weight:700;
+  box-shadow:0 3px 10px rgba(204,0,0,.3);
+  display:inline-flex;align-items:center;
+}
+.btn-o{
+  background:#fff;color:#444;border:1px solid #ccc;
+  border-radius:4px;padding:0 8px;height:23px;
+  font-size:7.5px;font-weight:500;
+  display:inline-flex;align-items:center;
+}
+/* camera */
+.hero-img-wrap{flex:0 0 82px;display:flex;align-items:flex-end;justify-content:center;position:relative}
+.cam-stage{position:relative;width:82px;height:85px;display:flex;align-items:center;justify-content:center}
+.cam-glow{position:absolute;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(204,0,0,.13) 0%,transparent 68%);animation:glwp 3.5s ease-in-out infinite}
+@keyframes glwp{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.cam-ped{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:61px;height:7px;border-radius:50%;background:linear-gradient(180deg,#e0e0e0,#b8b8b8);box-shadow:0 3px 7px rgba(0,0,0,.14)}
+@keyframes camfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-slide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+/* arrows */
+.h-arr{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,.9);border:none;
+  font-size:11px;box-shadow:0 1px 4px rgba(0,0,0,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:#555;z-index:10;cursor:pointer;line-height:1;
+}
+.h-prev{right:5px}.h-next{left:5px}
+.h-dots{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:3px;z-index:10}
+.h-dot{height:4px;border-radius:2px;border:none;padding:0;background:#ccc;width:4px;transition:all .3s;cursor:pointer}
+.h-dot.on{background:var(--red);width:11px}
+
+/* ══ SERVICE CARDS (7) — square, no pink bg ══ */
+#svc-sec{
+  background:#fff;
+  padding:7px 5px 8px;
+  border-bottom:1px solid var(--gray-bd);
+}
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+}
+.svc-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;
+  padding:5px 2px 5px;
+  border:1px solid #eee;border-radius:8px;
+  cursor:pointer;text-decoration:none;color:inherit;background:#fff;
+  aspect-ratio:1/1;
+  transition:border-color .2s;
+  overflow:hidden;
+}
+.svc-card:active{border-color:var(--red);background:#fffafa}
+.svc-ico{display:flex;align-items:center;justify-content:center;width:16px;height:16px;flex-shrink:0}
+.svc-ico svg{width:15px;height:15px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.svc-lbl{
+  font-size:5.5px;font-weight:600;color:var(--black);
+  text-align:center;line-height:1.25;
+  display:-webkit-box;
+  line-clamp:2;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  width:100%;padding:0 2px;
+}
+
+/* ══ BANNER SLOT ══ */
+.banner-slot{
+  width:100%;background:#111;position:relative;overflow:hidden;line-height:0;
+}
+.banner-slot::before{content:'';display:block;padding-top:16%}
+.banner-slot-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.bnr-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s ease}
+.bnr-img.hidden{opacity:0}
+.bnr-placeholder{color:#555;font-size:7px;text-align:center;padding:5px;display:flex;flex-direction:column;align-items:center;gap:3px;z-index:2}
+.bnr-placeholder-icon{font-size:15px;opacity:.3}
+.bnr-placeholder-text{opacity:.4;font-size:9px}
+.bnr-dots{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:3px;z-index:10}
+.bnr-dot{width:3px;height:3px;border-radius:1.5px;border:none;padding:0;background:rgba(255,255,255,.35);cursor:pointer;transition:all .3s}
+.bnr-dot.on{background:var(--red);width:8px}
+
+/* ══ SECTIONS ══ */
+.sec{padding:12px 8px;background:#fff}
+.sec-gray{background:var(--gray-bg);padding:12px 8px}
+.stitle{text-align:center;font-size:9px;font-weight:900;color:var(--t1);margin-bottom:3px}
+.sline{width:19px;height:2px;background:var(--red);margin:0 auto 9px;border-radius:2px}
+
+/* ══ QUICK LINKS (4×2) — horizontal card, icon right, text left ══ */
+.ql-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ql-card{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 5px;
+  border:1px solid #eee;border-radius:5px;
+  cursor:pointer;background:#fff;
+  min-height:37px;
+  text-decoration:none;color:inherit;
+  transition:border-color .2s;
+}
+.ql-card:active{border-color:var(--red);background:#fffafa}
+.ql-ico{width:19px;height:19px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ql-ico svg{width:15px;height:15px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ql-t{font-size:6px;font-weight:700;color:var(--red);margin-bottom:1px;line-height:1.2}
+.ql-d{font-size:5px;color:#aaa;line-height:1.2}
+
+/* ══ WHY US (5 col) ══ */
+.why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;text-align:center}
+.why-card{padding:7px 2px}
+.why-ico-wrap{
+  width:27px;height:27px;margin:0 auto 4px;
+  border-radius:50%;border:1px solid #ddd;
+  display:flex;align-items:center;justify-content:center;background:#fff;
+}
+.why-ico-wrap svg{width:14px;height:14px;stroke:#444;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.why-t{font-size:5.5px;font-weight:800;color:var(--t1);margin-bottom:1px;line-height:1.25}
+.why-d{font-size:4.5px;color:#aaa;line-height:1.25}
+
+/* ══ NEWS (3 cards, horizontal scroll) ══ */
+.news-nav{position:relative;padding:0 5px}
+.news-arr{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:15px;height:15px;border-radius:50%;
+  background:rgba(255,255,255,.92);border:none;font-size:9px;
+  box-shadow:0 1px 5px rgba(0,0,0,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:#555;z-index:5;cursor:pointer;
+}
+.news-arr-prev{right:-2px}.news-arr-next{left:-2px}
+.news-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;scroll-snap-type:x mandatory}
+.news-scroll::-webkit-scrollbar{display:none}
+.news-card{
+  flex:0 0 calc(33.333% - 6px);min-width:65px;
+  border-radius:5px;overflow:hidden;border:1px solid #eee;
+  cursor:pointer;background:#fff;scroll-snap-align:start;
+}
+.news-thumb{
+  height:58px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:#1a1a1a;
+}
+.news-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.news-thumb-ph{font-size:19px;opacity:.4;z-index:1}
+.ntag{position:absolute;top:3px;right:3px;color:#fff;font-size:5px;padding:1px 4px;border-radius:7px;font-weight:700;z-index:2}
+.news-body{padding:5px 4px}
+.n-title{font-size:6px;font-weight:700;margin-bottom:1px;line-height:1.3;color:var(--t1)}
+.n-desc{font-size:5px;color:#888;line-height:1.4;margin-bottom:3px}
+.n-foot{display:flex;justify-content:space-between;align-items:center}
+.n-date{font-size:4.5px;color:#ccc}
+.n-more{font-size:5px;color:var(--red);font-weight:700}
+
+/* ══ NEWSLETTER ══ */
+#nl-sec{background:var(--red);padding:11px 8px}
+.nl-inner{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.nl-left{display:flex;align-items:center;gap:7px}
+.nl-ico{font-size:19px;flex-shrink:0}
+.nl-title{font-size:8px;font-weight:900;color:#fff;margin-bottom:1px}
+.nl-sub  {font-size:5.5px;color:rgba(255,255,255,.75)}
+.nl-form{display:flex;gap:4px;flex:1;min-width:136px}
+.nl-inp {flex:1;padding:5px 7px;border-radius:4px;border:none;font-size:7px;font-family:var(--font);direction:rtl;outline:none}
+.nl-btn {background:var(--black);color:#fff;border:none;border-radius:4px;padding:5px 8px;font-size:7px;font-weight:700;font-family:var(--font);white-space:nowrap}
+.nl-mail-ico{font-size:16px;color:rgba(255,255,255,.3)}
+
+/* ══ FOOTER ══ */
+#footer{background:var(--black);color:#fff;padding:7px 8px}
+.ft-inner{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #2a2a2a;padding-top:10px;gap:8px;flex-wrap:wrap}
+.ft-copy{font-size:6px;color:#666}
+.ft-soc{display:flex;gap:7px}
+.ft-soc a{color:#666;font-size:10px}
+
+/* scroll top */
+#stb{
+  position:fixed;bottom:10px;left:8px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--red);color:#fff;border:none;
+  font-size:9px;font-weight:700;
+  box-shadow:0 3px 10px rgba(204,0,0,.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;z-index:50;transition:opacity .3s;
+}
+#stb.show{opacity:1;pointer-events:all}
+
+/* reveal */
+.rev{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.rev.in{opacity:1;transform:none}
+
+/* skeleton */
+.sk{background:linear-gradient(90deg,#f0f0f0 25%,#e6e6e6 50%,#f0f0f0 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:8px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+  <script src="gmt-brand.js"></script>
+<script src="gmt-bugcatcher.js"></script><!-- 🐞 جامع الأخطاء (2026-07-10) -->
+  <script src="gmt-inspector.js"></script>
+    <script src="gmt-ui.js"></script><!-- 🎨 نوافذ بهويتنا + روابط مضبوطة + إصلاح المشاركة --><!-- 🔍 المفتّش: تقرير التجربة -->
+  <!-- 🎨 الهوية البصرية الموحّدة (2026-07-12) — مصدر الحقيقة الوحيد للألوان والخط -->
+  <link rel="stylesheet" href="gmt-theme.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span id="tb-text">مرحباً بك في وكيل <span class="red">كانون</span> الرسمي في سوريا</span>
+  <div class="tb-right">
+    <button class="tb-lang">AR</button>
+    <span style="font-size:12px;color:#ccc">🔔</span>
+    <div class="tb-notif">🔔<span class="tb-badge">3</span></div>
+    <button class="btn-contact" id="tb-contact-btn">تواصل معنا</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="hdr-inner">
+    <a href="/" class="logo">
+      <div class="logo-circle">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="13" stroke="white" stroke-width="2.2"/>
+          <circle cx="18" cy="18" r="7.5" stroke="white" stroke-width="2"/>
+          <circle cx="18" cy="18" r="2.8" fill="white"/>
+          <circle cx="18" cy="18" r="1" fill="#CC0000"/>
+          <line x1="18" y1="5" x2="18" y2="3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="33" x2="18" y2="31" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="5" y1="18" x2="3" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="33" y1="18" x2="31" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="24" cy="8" r="1.5" fill="#CC0000"/>
+        </svg>
+      </div>
+      <div class="logo-texts">
+        <div class="lc-canon">Canon</div>
+        <div class="lc-gen">GENERAL</div>
+        <div class="lc-media">MEDIA TECH</div>
+        <div class="lc-sub">CANON AUTHORIZED DEALER</div>
+      </div>
+    </a>
+    <nav class="hdr-nav" id="hdr-nav"></nav>
+    <div class="hdr-icons">
+      <span class="hdr-ico">🔍</span>
+      <span class="hdr-ico">🔔</span>
+      <span class="hdr-ico">☰</span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <button class="h-arr h-prev" onclick="hGo(-1)">›</button>
+  <button class="h-arr h-next" onclick="hGo(1)">‹</button>
+  <div class="h-dots" id="h-dots"></div>
+</section>
+
+<!-- SERVICE CARDS (7) — RTL: مراكز الخدمة | دعم فني | كوبونات | تتبع الشحنات | ضمان | تتبع طلبات | المتجر -->
+<section id="svc-sec" class="rev">
+  <div class="svc-grid" id="svc-grid">
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div>
+  </div>
+</section>
+
+<!-- TOP BANNER SLOT -->
+<div class="banner-slot rev" id="banner-top">
+  <div class="banner-slot-inner">
+    <div class="bnr-placeholder" id="bnr-top-ph">
+      <span class="bnr-placeholder-icon">🖼</span>
+      <span class="bnr-placeholder-text">بانر – يُرفع من Supabase</span>
+    </div>
+  </div>
+  <div class="bnr-dots" id="bnr-top-dots"></div>
+</div>
+
+<!-- QUICK LINKS (4×2) — items different from svc-cards -->
+<section class="sec rev" id="ql-sec">
+  <div class="stitle" id="ql-title">روابط سريعة</div>
+  <div class="sline"></div>
+  <div class="ql-grid" id="ql-grid">
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+    <div class="sk" style="height:37px"></div><div class="sk" style="height:37px"></div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="sec sec-gray rev" id="why-sec">
+  <div class="stitle" id="why-title">لماذا تختار جنرال ميديا تك؟</div>
+  <div class="sline"></div>
+  <div class="why-grid" id="why-grid">
+    <div class="sk" style="height:70px"></div><div class="sk" style="height:70px"></div>
+    <div class="sk" style="height:70px"></div><div class="sk" style="height:70px"></div>
+    <div class="sk" style="height:70px"></div>
+  </div>
+</section>
+
+<!-- BOTTOM BANNER SLOT -->
+<!-- ═══ من نحن (أُضيف 2026-07-10 — م26) ═══ -->
+<section class="sec rev" id="about">
+  <div class="stitle">من نحن</div>
+  <div style="max-width:840px;margin:0 auto;text-align:center;color:#3a3a3a;font-size:15px;line-height:2.15;padding:0 18px;">
+    <p><b style="color:#D5001C;">جنرال ميديا تك — General Media Tech</b> هي الوكيل المعتمد لمنتجات
+    <b>Canon</b> في سوريا: كاميرات وعدسات وطابعات وملحقاتها الأصلية 100%.</p>
+    <p style="margin-top:12px;">كل جهاز يخرج من عندنا يحمل <b>كفالة إلكترونية موثّقة</b>
+    (باركود + بطاقة NFC) تتحقق منها وتفعّلها بثوانٍ، مع خدمة ما بعد بيع حقيقية،
+    وشبكة فروع ووكلاء معتمدين، ونظام عمل موحّد يجعل كل عملية مسجّلة وموثوقة —
+    من لحظة الشراء حتى وصول جهازك بين يديك.</p>
+  </div>
+</section>
+
+<div class="banner-slot rev" id="banner-bottom">
+  <div class="banner-slot-inner">
+    <div class="bnr-placeholder" id="bnr-bot-ph">
+      <span class="bnr-placeholder-icon">🖼</span>
+      <span class="bnr-placeholder-text">بانر – يُرفع من Supabase</span>
+    </div>
+  </div>
+  <div class="bnr-dots" id="bnr-bot-dots"></div>
+</div>
+
+<!-- NEWS -->
+<section class="sec rev" id="news-sec">
+  <div class="stitle" id="news-title">أحدث الأخبار والعروض</div>
+  <div class="sline"></div>
+  <div class="news-nav">
+    <button class="news-arr news-arr-prev" onclick="newsScroll(1)">›</button>
+    <div class="news-scroll" id="news-scroll">
+      <div class="sk" style="height:160px;min-width:95px;flex:0 0 calc(33.333% - 6px)"></div>
+      <div class="sk" style="height:160px;min-width:95px;flex:0 0 calc(33.333% - 6px)"></div>
+      <div class="sk" style="height:160px;min-width:95px;flex:0 0 calc(33.333% - 6px)"></div>
+    </div>
+    <button class="news-arr news-arr-next" onclick="newsScroll(-1)">‹</button>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="nl-sec">
+  <div class="nl-inner">
+    <div class="nl-left">
+      <span class="nl-ico">🖼</span>
+      <div>
+        <div class="nl-title" id="nl-title">اشترك الآن ليصلك كل جديد</div>
+        <div class="nl-sub"   id="nl-sub">عروض حصرية • أخبار • منتجات جديدة</div>
+      </div>
+    </div>
+    <div class="nl-form">
+      <input class="nl-inp" type="email" id="nl-input" placeholder="أدخل بريدك الإلكتروني">
+      <button class="nl-btn" id="nl-btn">اشترك هنا</button>
+    </div>
+    <span class="nl-mail-ico">✉️</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- ═══ وكلاؤنا المعتمدون (أُضيف 2026-07-10 — م26) — يُدار من جدول agents بقاعدة الموقع ═══ -->
+<section class="sec sec-gray rev" id="agents" style="display:none;">
+  <div class="stitle">وكلاؤنا المعتمدون</div>
+  <div id="agents-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;max-width:1000px;margin:0 auto;padding:0 18px;"></div>
+</section>
+
+<footer id="footer">
+  <div class="ft-inner">
+    <span class="ft-copy" id="ft-copy">© 2024 General Media Tech. جميع الحقوق محفوظة.</span>
+    <div class="ft-soc" id="ft-soc"></div>
+  </div>
+</footer>
+
+<button id="stb" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- SVG ICONS -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ico-store"     viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></symbol>
+  <symbol id="ico-orders"    viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></symbol>
+  <symbol id="ico-warranty"  viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-shipping"  viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+  <symbol id="ico-coupon"    viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="ico-support"   viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></symbol>
+  <symbol id="ico-location"  viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="ico-faq"       viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ico-truck"        viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+  <symbol id="ico-shield"       viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="ico-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="ico-headphones"   viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></symbol>
+  <symbol id="ico-fast-delivery" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+  <symbol id="ico-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+  <symbol id="ico-facebook"  viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></symbol>
+  <symbol id="ico-youtube"   viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></symbol>
+</svg>
+
+<script type="module">
+const SUPA_URL = window.SUPABASE_URL      || 'https://YOUR_PROJECT.supabase.co';
+const SUPA_KEY = window.SUPABASE_ANON_KEY || 'YOUR_ANON_KEY';
+
+async function sbFetch(table, opts={}) {
+  const p = new URLSearchParams({ select:opts.select||'*', order:opts.order||'sort_order.asc' });
+  if (opts.eq)            p.set(opts.eq[0], `eq.${opts.eq[1]}`);
+  if (opts.active!==false) p.set('is_active','eq.true');
+  const r = await fetch(`${SUPA_URL}/rest/v1/${table}?${p}`, {
+    headers:{ apikey:SUPA_KEY, Authorization:`Bearer ${SUPA_KEY}` }
+  });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+/* ── Fallback ── */
+const FB = {
+  settings:{
+    topbar_highlight_ar:'كانون', contact_btn_ar:'تواصل معنا',
+    copyright_ar:'© 2024 General Media Tech. جميع الحقوق محفوظة.',
+    newsletter_title_ar:'اشترك الآن ليصلك كل جديد',
+    newsletter_sub_ar:'عروض حصرية • أخبار • منتجات جديدة',
+    newsletter_btn_ar:'اشترك هنا', newsletter_placeholder_ar:'أدخل بريدك الإلكتروني',
+    why_section_title_ar:'لماذا تختار جنرال ميديا تك؟',
+    news_section_title_ar:'أحدث الأخبار والعروض', quicklinks_title_ar:'روابط سريعة',
+  },
+  nav:[
+    {label_ar:'الرئيسية',url:'/',is_home:true},{label_ar:'عن الشركة',url:'#'},
+    {label_ar:'المنتجات',url:'#'},{label_ar:'خدماتنا',url:'#'},{label_ar:'المركز الإعلامي',url:'#'},
+  ],
+  hero:[
+    {title_ar:'التصوير، الإبداع، الاحتراف',subtitle_ar:'هذا هو عالم Canon',
+     description_ar:'اكتشف أحدث كاميرات وعدسات كانون الأصلية\nمع ضمان الوكيل الرسمي في سوريا',
+     btn1_label_ar:'اكتشف المزيد',btn1_url:'#',btn2_label_ar:'تصفح المنتجات',btn2_url:'#',
+     bg_color:'light',image_url:null},
+    {title_ar:'خدمات ما بعد البيع',subtitle_ar:'Canon',
+     description_ar:'راحة بالك مع ضمان الوكيل الرسمي\nوخدمات ما بعد البيع الموثوقة',
+     btn1_label_ar:'تحقق من الكفالة',btn1_url:'#',btn2_label_ar:'مراكز الخدمة',btn2_url:'#',
+     bg_color:'#111',image_url:null},
+    {title_ar:'تتبع شحناتك بسهولة',subtitle_ar:'بكل سرعة وموثوقية',
+     description_ar:'خدمة تتبع الشحنات لمعرفة حالة طلبك\nأولاً بأول أينما كنت',
+     btn1_label_ar:'تتبع شحنتك الآن',btn1_url:'#',btn2_label_ar:'تتبع الطلبات',btn2_url:'#',
+     bg_color:'#0a0a1e',image_url:null},
+  ],
+  /* SERVICE CARDS — 7 items
+     RTL visual order (right→left on screen):
+     [0]مراكز الخدمة | [1]دعم فني | [2]كوبونات | [3]تتبع الشحنات | [4]ضمان | [5]تتبع طلباتك(RED) | [6]المتجر(RED,far-left)
+     Colors: المتجر=RED text, تتبع طلباتك=RED text, rest=BLACK text, icons always RED
+  */
+  svcCards:[
+    {sort_order:1,label_ar:'مراكز الخدمة',     icon_name:'location', url:'#'},
+    {sort_order:2,label_ar:'دعم فني مباشر',     icon_name:'support',  url:'#'},
+    {sort_order:3,label_ar:'كوبونات وعروض',     icon_name:'coupon',   url:'#'},
+    {sort_order:4,label_ar:'تتبع الشحنات',      icon_name:'shipping', url:'#'},
+    {sort_order:5,label_ar:'ضمان وكفالة',       icon_name:'warranty', url:'#'},
+    {sort_order:6,label_ar:'تتبع طلباتك',       icon_name:'orders',   url:'#'},
+    {sort_order:7,label_ar:'المتجر الإلكتروني', icon_name:'store',    url:'#'},
+  ],
+  /* QUICK LINKS — 8 items, NO duplicates with svc-cards above
+     Per reference image rows: 
+     Row1: المتجر | تتبع طلباتك | تصفح كفالتك | تتبع الشحنات
+     Row2: مراكز الخدمة | الدعم الفني | كوبونات | الأسئلة
+     These match the reference exactly — QL section shows ALL 8 quick links
+     with icon+title+desc horizontal layout */
+  quickLinks:[
+    {sort_order:1,title_ar:'المتجر الإلكتروني', description_ar:'تسوق منتجات كانون الأصلية',   icon_name:'store',    url:'#'},
+    {sort_order:2,title_ar:'تتبع طلباتك',       description_ar:'تابع طلباتك بسهولة',          icon_name:'orders',   url:'#'},
+    {sort_order:3,title_ar:'تصفح كفالتك',       description_ar:'تحقق من حالة ضمان منتجك',     icon_name:'warranty', url:'#'},
+    {sort_order:4,title_ar:'تتبع الشحنات',      description_ar:'معرفة موقع شحنتك',            icon_name:'shipping', url:'#'},
+    {sort_order:5,title_ar:'مراكز الخدمة',      description_ar:'اعثر على أقرب مركز معتمد',    icon_name:'location', url:'#'},
+    {sort_order:6,title_ar:'الدعم الفني',        description_ar:'تواصل مع فريق الدعم المعتمد', icon_name:'support',  url:'#'},
+    {sort_order:7,title_ar:'كوبونات وعروض',     description_ar:'احدث العروض والخصومات',        icon_name:'coupon',   url:'#'},
+    {sort_order:8,title_ar:'الأسئلة الشائعة',   description_ar:'إجابات لاستفساراتك',          icon_name:'faq',      url:'#'},
+  ],
+  whyUs:[
+    {title_ar:'وكيل رسمي Canon',   description_ar:'معتمد وموثوق من Canon',   icon_name:'truck'},
+    {title_ar:'ضمان محلي معتمد',   description_ar:'ضمان رسمي داخل سوريا',    icon_name:'shield'},
+    {title_ar:'منتجات أصلية 100%', description_ar:'جودة مضمونة',             icon_name:'check-circle'},
+    {title_ar:'دعم فني متخصص',     description_ar:'فريق دعم جاهز لمساعدتك', icon_name:'headphones'},
+    {title_ar:'شحن سريع وأمن',     description_ar:'خدمة توصيل موثوقة',       icon_name:'fast-delivery'},
+  ],
+  news:[
+    {title_ar:'خصومات تصل حتى 30%',        description_ar:'على مجموعة مختارة من العدسات',tag_ar:'عرض خاص',tag_color:'#CC0000',link_url:'#',published_at:'2024-05-25',image_url:null},
+    {title_ar:'إطلاق Canon EOS R6 Mark II', description_ar:'الأداء الذي يفوق التوقعات',   tag_ar:'خبر',    tag_color:'#0066CC',link_url:'#',published_at:'2024-05-15',image_url:null},
+    {title_ar:'معرض التصوير السنوي',         description_ar:'شاركوا في معرض دمشق الدولي',  tag_ar:'معرض',   tag_color:'#006600',link_url:'#',published_at:'2024-05-10',image_url:null},
+  ],
+  footer:[
+    {label_ar:'Instagram',url:'#',icon_name:'instagram',link_type:'social'},
+    {label_ar:'Facebook', url:'#',icon_name:'facebook', link_type:'social'},
+    {label_ar:'YouTube',  url:'#',icon_name:'youtube',  link_type:'social'},
+  ],
+};
+
+/* ── Helpers ── */
+function svgI(name,s=22){return`<svg width="${s}" height="${s}" stroke="#CC0000" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${name}"/></svg>`}
+function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('ar-SY',{day:'numeric',month:'long',year:'numeric'})}
+
+/* ── Settings ── */
+function renderSettings(s){
+  const tbt=document.getElementById('tb-text');
+  if(tbt) tbt.innerHTML=`مرحباً بك في وكيل <span class="red">${s.topbar_highlight_ar||'كانون'}</span> الرسمي في سوريا`;
+  ['tb-contact-btn','nl-btn'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=id==='nl-btn'?(s.newsletter_btn_ar||'اشترك هنا'):(s.contact_btn_ar||'تواصل معنا')});
+  const map={
+    'ft-copy':s.copyright_ar,'nl-title':s.newsletter_title_ar,
+    'nl-sub':s.newsletter_sub_ar,'ql-title':s.quicklinks_title_ar,
+    'why-title':s.why_section_title_ar,'news-title':s.news_section_title_ar,
+  };
+  Object.entries(map).forEach(([id,v])=>{const e=document.getElementById(id);if(e&&v)e.textContent=v});
+  const ni=document.getElementById('nl-input');
+  if(ni&&s.newsletter_placeholder_ar) ni.placeholder=s.newsletter_placeholder_ar;
+}
+
+/* ── Nav ── */
+function renderNav(items){
+  const nav=document.getElementById('hdr-nav');
+  if(!nav)return;
+  nav.innerHTML=items.map(n=>`<a href="${n.url||'#'}" ${n.is_home?'class="act"':''}>${n.label_ar}</a>`).join('');
+}
+
+/* ── Hero ── */
+let hIdx=0,hTimer;
+function renderHero(slides){
+  const sec=document.getElementById('hero');
+  sec.querySelectorAll('.hero-slide').forEach(s=>s.remove());
+  const prev=sec.querySelector('.h-prev');
+  slides.forEach((sl,i)=>{
+    const light=!sl.bg_color||sl.bg_color==='#fff'||sl.bg_color==='white'||sl.bg_color==='light';
+    const bg=light?'background:linear-gradient(128deg,#fff 0%,#f5f5f5 25%,#ffe0e0 55%,#ffcaca 100%)':`background:${sl.bg_color}`;
+    const em=light?'📷':i===1?'🛡':'🚛';
+    const div=document.createElement('div');
+    div.className='hero-slide'+(i===0?' on':'')+(light?' hs-light':'');
+    div.style.cssText=bg;
+    div.innerHTML=`
+      ${light?'<div class="h-deco"></div><div class="hp hp1"></div><div class="hp hp2"></div><div class="hp hp3"></div>':''}
+      ${sl.image_url?`<img class="hero-slide-img" src="${sl.image_url}" alt="">`:''}
+      <div class="hero-body">
+        <div class="hero-txt">
+          <p class="h-small" style="${light?'':'color:#999'}">${sl.title_ar||''}</p>
+          <h2 class="h-t1" style="${light?'':'color:#ccc'}">${sl.subtitle_ar||''}</h2>
+          <p class="h-desc" style="${light?'':'color:#888'}">${(sl.description_ar||'').replace(/\n/g,'<br>')}</p>
+          <div class="hero-btns">
+            <a href="${sl.btn1_url||'#'}" class="btn-r">${sl.btn1_label_ar||''}</a>
+            ${sl.btn2_label_ar?`<a href="${sl.btn2_url||'#'}" class="btn-o" style="${light?'':'background:transparent;color:#aaa;border-color:#555'}">${sl.btn2_label_ar}</a>`:''}
+          </div>
+        </div>
+      </div>
+    `;
+    sec.insertBefore(div,prev);
+  });
+  document.getElementById('h-dots').innerHTML=slides.map((_,i)=>`<button class="h-dot${i===0?' on':''}" onclick="hSet(${i})"></button>`).join('');
+  clearInterval(hTimer);hTimer=setInterval(()=>hGo(1),5000);
+}
+window.hSet=function(i){
+  const sl=document.querySelectorAll('.hero-slide'),dt=document.querySelectorAll('.h-dot');
+  sl[hIdx].classList.remove('on');dt[hIdx].classList.remove('on');
+  hIdx=(i+sl.length)%sl.length;
+  sl[hIdx].classList.add('on');dt[hIdx].classList.add('on');
+  clearInterval(hTimer);hTimer=setInterval(()=>hGo(1),5000);
+};
+window.hGo=d=>hSet(hIdx+d);
+
+/* ── Service Cards ── */
+function renderSvcCards(cards){
+  /* 
+    RTL order: cards[0]=مراكز الخدمة(rightmost), cards[6]=المتجر(leftmost)
+    Per request:
+    - المتجر الإلكتروني (cards[6], leftmost) → RED label, stays on far left
+    - تتبع طلباتك (cards[5]) → RED label  
+    - all others → BLACK label
+    Icon color: RED for all (matches reference)
+  */
+  const redCards = ['المتجر الإلكتروني','تتبع طلباتك'];
+  document.getElementById('svc-grid').innerHTML=cards.map(c=>{
+    const isRed = redCards.includes(c.label_ar);
+    const lblColor = isRed ? 'var(--red)' : 'var(--black)';
+    return `<a href="${c.url||'#'}" class="svc-card" ${c.open_new_tab?'target="_blank"':''}>
+      <div class="svc-ico">${c.icon_svg||`<svg width="22" height="22" stroke="#CC0000" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${c.icon_name||'store'}"/></svg>`}</div>
+      <span class="svc-lbl" style="color:${lblColor}">${c.label_ar}</span>
+    </a>`;
+  }).join('');
+}
+
+/* ── Banners ── */
+function renderBanner(slot,banners){
+  const id=slot==='top'?'banner-top':'banner-bottom';
+  const doId=slot==='top'?'bnr-top-dots':'bnr-bot-dots';
+  const phId=slot==='top'?'bnr-top-ph':'bnr-bot-ph';
+  const wrap=document.getElementById(id);
+  const dots=document.getElementById(doId);
+  const ph=document.getElementById(phId);
+  if(!banners||!banners.length)return;
+  if(ph)ph.style.display='none';
+  const imgs=banners.map((b,i)=>{
+    const img=document.createElement('img');
+    img.className='bnr-img'+(i!==0?' hidden':'');
+    img.src=b.image_url||'';img.alt=b.alt_text||'';
+    if(b.link_url){img.style.cursor='pointer';img.onclick=()=>window.open(b.link_url,'_blank');}
+    wrap.querySelector('.banner-slot-inner').appendChild(img);
+    return img;
+  });
+  dots.innerHTML=banners.map((_,i)=>`<button class="bnr-dot${i===0?' on':''}" onclick="bnrSet_${slot}(${i})"></button>`).join('');
+  let bIdx=0;
+  function bnrSet(i){
+    imgs[bIdx].classList.add('hidden');dots.querySelectorAll('.bnr-dot')[bIdx].classList.remove('on');
+    bIdx=(i+banners.length)%banners.length;
+    imgs[bIdx].classList.remove('hidden');dots.querySelectorAll('.bnr-dot')[bIdx].classList.add('on');
+  }
+  window[`bnrSet_${slot}`]=bnrSet;
+  setInterval(()=>bnrSet(bIdx+1),(banners[0].display_secs||3)*1000);
+}
+
+/* ── Quick Links ── */
+function renderQuickLinks(links){
+  document.getElementById('ql-grid').innerHTML=links.map(l=>`
+    <a href="${l.url||'#'}" class="ql-card" ${l.open_new_tab?'target="_blank"':''}>
+      <div class="ql-ico">${l.icon_svg||svgI(l.icon_name||'store',22)}</div>
+      <div>
+        <div class="ql-t">${l.title_ar}</div>
+        <div class="ql-d">${l.description_ar||''}</div>
+      </div>
+    </a>`).join('');
+}
+
+/* ── Why Us ── */
+function renderWhyUs(items){
+  document.getElementById('why-grid').innerHTML=items.map(w=>`
+    <div class="why-card">
+      <div class="why-ico-wrap">
+        ${w.icon_svg||`<svg width="20" height="20" stroke="#444" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${w.icon_name||'check-circle'}"/></svg>`}
+      </div>
+      <div class="why-t">${w.title_ar}</div>
+      <div class="why-d">${w.description_ar||''}</div>
+    </div>`).join('');
+}
+
+/* ── News ── */
+function renderNews(items){
+  document.getElementById('news-scroll').innerHTML=items.map(n=>`
+    <a href="${n.link_url||'#'}" class="news-card">
+      <div class="news-thumb">
+        ${n.image_url?`<img src="${n.image_url}" alt="">`:'<span class="news-thumb-ph">📷</span>'}
+        ${n.tag_ar?`<span class="ntag" style="background:${n.tag_color||'#CC0000'}">${n.tag_ar}</span>`:''}
+      </div>
+      <div class="news-body">
+        <h3 class="n-title">${n.title_ar}</h3>
+        <p class="n-desc">${n.description_ar||''}</p>
+        <div class="n-foot">
+          <span class="n-date">${fmtDate(n.published_at)}</span>
+          <span class="n-more">اقرأ المزيد ←</span>
+        </div>
+      </div>
+    </a>`).join('');
+}
+window.newsScroll=dir=>{document.getElementById('news-scroll').scrollBy({left:dir*110,behavior:'smooth'})};
+
+/* ── Footer ── */
+function renderFooter(links){
+  const el=document.getElementById('ft-soc');
+  if(el) el.innerHTML=links.filter(l=>l.link_type==='social').map(l=>
+    `<a href="${l.url||'#'}" title="${l.label_ar}" target="_blank">
+       <svg width="16" height="16" stroke="#666" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#ico-${l.icon_name||'instagram'}"/></svg>
+     </a>`).join('');
+}
+
+/* ── Scroll ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('header').classList.toggle('stuck',scrollY>40);
+  document.getElementById('stb').classList.toggle('show',scrollY>250);
+});
+
+/* ── Reveal ── */
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.07});
+document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+
+/* ── Load All ── */
+async function loadAll(){
+  try{const rows=await sbFetch('site_settings',{select:'key,value',active:false});renderSettings({...FB.settings,...Object.fromEntries(rows.map(r=>[r.key,r.value]))});}catch{renderSettings(FB.settings);}
+  try{renderNav(await sbFetch('nav_items'));}catch{renderNav(FB.nav);}
+  try{renderHero(await sbFetch('hero_slides'));}catch{renderHero(FB.hero);}
+  try{renderSvcCards(await sbFetch('service_cards'));}catch{renderSvcCards(FB.svcCards);}
+  try{renderBanner('top',await sbFetch('banners',{eq:['slot','top']}));}catch{}
+  try{renderQuickLinks(await sbFetch('quick_links'));}catch{renderQuickLinks(FB.quickLinks);}
+  try{renderWhyUs(await sbFetch('why_us_features'));}catch{renderWhyUs(FB.whyUs);}
+  try{renderBanner('bottom',await sbFetch('banners',{eq:['slot','bottom']}));}catch{}
+  try{renderNews(await sbFetch('news_cards',{order:'sort_order.asc'}));}catch{renderNews(FB.news);}
+  try{renderFooter(await sbFetch('footer_links'));}catch{renderFooter(FB.footer);}
+}
+loadAll();
+</script>
+<script>
+/* وكلاؤنا: يُقرأ من جدول agents (شغّل GMT_SITE_AGENTS.txt على قاعدة الموقع أولاً).
+   الإدارة حالياً: Supabase → Table editor → agents. القسم يظهر فقط عند وجود وكلاء. */
+(async () => {
+  try {
+    const r = await fetch(window.SUPABASE_URL + '/rest/v1/agents?is_active=eq.true&select=name,city,phone&order=sort_order.asc,name.asc', {
+      headers: { apikey: window.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + window.SUPABASE_ANON_KEY }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    if (!Array.isArray(rows) || !rows.length) return;
+    document.getElementById('agents-grid').innerHTML = rows.map(a => `
+      <div style="background:#fff;border:1px solid #eee;border-radius:16px;padding:16px 14px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.05);">
+        <div style="width:42px;height:42px;border-radius:12px;background:rgba(213,0,28,.09);color:#D5001C;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:19px;">🤝</div>
+        <div style="font-weight:800;font-size:14.5px;color:#222;">${String(a.name||'').replace(/</g,'&lt;')}</div>
+        ${a.city ? `<div style="font-size:12px;color:#888;margin-top:2px;">📍 ${String(a.city).replace(/</g,'&lt;')}</div>` : ''}
+        ${a.phone ? `<a href="tel:${String(a.phone).replace(/[^+\d]/g,'')}" style="display:inline-block;margin-top:9px;background:#D5001C;color:#fff;text-decoration:none;font-size:12px;font-weight:800;padding:7px 16px;border-radius:99px;">📞 ${String(a.phone).replace(/</g,'&lt;')}</a>` : ''}
+      </div>`).join('');
+    document.getElementById('agents').style.display = '';
+  } catch (_) {}
+})();
+</script>
+
+<script>
+/* ═══ الإشعارات — أُضيفت 2026-07-12 (طلب المالك: أي شخص يدخل الموقع يُدعى للسماح
+   بالإشعارات ليتلقى العروض والأخبار). كانت موجودة بالمتجر وصفحة البحث عن الكفالة
+   وناقصة هنا وحدها. تُعرض مرة واحدة فقط ولا تُلحّ. ═══ */
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (!('Notification' in window)) return;
+    if (Notification.permission !== 'default') return;
+    if (localStorage.getItem('gmt_notif_prompted')) return;
+    setTimeout(() => {
+      const b = document.createElement('div');
+      b.id = 'gmt-nf';
+      b.style.cssText = 'position:fixed;left:14px;right:14px;bottom:14px;z-index:9999;background:#fff;border:1.5px solid #eee;border-right:5px solid #C00012;border-radius:14px;padding:13px 15px;box-shadow:0 12px 40px rgba(0,0,0,.18);font-family:Cairo,Arial,sans-serif;display:flex;align-items:center;gap:11px;max-width:520px;margin:0 auto;';
+      b.innerHTML = '<div style="font-size:24px;">🔔</div>'
+        + '<div style="flex:1;text-align:right;"><div style="font-weight:900;font-size:13.5px;color:#111;">فعّل الإشعارات</div>'
+        + '<div style="font-size:11.5px;color:#666;font-weight:600;line-height:1.6;">لتصلك العروض الجديدة وآخر الأخبار من مجموعة ميديا تيك أولاً بأول.</div></div>'
+        + '<button id="gmt-nf-ok" style="background:#C00012;color:#fff;border:none;border-radius:9px;padding:9px 14px;font-family:Cairo,Arial,sans-serif;font-weight:900;font-size:12px;cursor:pointer;">تفعيل</button>'
+        + '<button id="gmt-nf-x" style="background:none;border:none;color:#9ca3af;font-size:18px;cursor:pointer;">✕</button>';
+      document.body.appendChild(b);
+      document.getElementById('gmt-nf-ok').onclick = async () => { try { await Notification.requestPermission(); } catch(_){} localStorage.setItem('gmt_notif_prompted','1'); b.remove(); };
+      document.getElementById('gmt-nf-x').onclick  = () => { localStorage.setItem('gmt_notif_prompted','1'); b.remove(); };
+    }, 2500);
+  } catch (_) {}
+});
+</script>
+
+
+</body>
+</html>
